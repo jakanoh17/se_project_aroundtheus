@@ -21,4 +21,4 @@ A simple landing page that showcases a photography profile with pictures of vari
 
 **[Github Pages Link](https://jakanoh17.github.io/se_project_aroundtheus/)**
 
-**[Video Description of Project]()**
+**[Video Description of Project](https://drive.google.com/file/d/1psQfEEThn5sdXDkudbTTHYm-Kg4qAvzB/view?usp=sharing)**
