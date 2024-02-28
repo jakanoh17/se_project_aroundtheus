@@ -1,0 +1,58 @@
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 282px);
+  grid-template-rows: repeat(2, 361px);
+  grid-auto-rows: 361px;
+  gap: 17px;
+  justify-content: center;
+}
+
+.gallery__card {
+  background-color: #fff;
+  border-radius: 10px;
+  border-style: none;
+  color: #000;
+  display: grid;
+  grid-template-rows: 282px 1fr;
+}
+
+.gallery__image {
+  width: 100%;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.gallery__info {
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 282px;
+  box-sizing: border-box;
+}
+
+.gallery__location {
+  margin: 0;
+  font-weight: 900;
+  font-size: 24px;
+  line-height: 1.2;
+  flex-shrink: 2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.gallery__like-button {
+  width: 21px;
+  height: 18px;
+  margin-left: 2px;
+  background-image: url("../images/heart_icon.svg");
+  background-color: #fff;
+  border: none;
+  transition: opacity 0.2s ease-in;
+}
+
+.gallery__like-button:hover {
+  opacity: 50%;
+  cursor: pointer;
+}
