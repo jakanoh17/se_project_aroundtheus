@@ -42,6 +42,12 @@
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+  transition: opacity 0.2s ease-in;
+}
+
+.modal__close-button:hover {
+  cursor: pointer;
+  opacity: 60%;
 }
 
 .modal__form-title {
@@ -73,8 +79,15 @@
   margin-top: 48px;
   height: 50px;
   border-style: none;
+  border-radius: 2px;
   background-color: #000;
   color: #fff;
+  transition: opacity 0.2s ease-in;
+}
+
+.modal__save-button:hover {
+  cursor: pointer;
+  opacity: 80%;
 }
 
 @media screen and (max-width: 621px) {
