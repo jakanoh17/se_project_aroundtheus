@@ -8,7 +8,7 @@
 
 **Intro**
 
-A simple landing page that showcases a photography profile with pictures of various locations around the US. Webpages makes use of grid and flex layouts and responsive designs.
+A simple landing page that showcases a photography profile with pictures of various locations around the US. Webpages makes use of grid and flex layouts, responsive designs, and some basic scripting.
 
 **Figma**
 

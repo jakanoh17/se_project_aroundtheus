@@ -36,7 +36,10 @@ const modalSaveButton = document.querySelector(".modal__save-button");
 const profileName = document.querySelector(".profile__name");
 const profileTitle = document.querySelector(".profile__title");
 const modalForm = document.getElementById("edit-form");
-const cardTemplate = document.querySelector("#card-template");
+const cardTemplate = document
+  .querySelector("#card-template")
+  .content.querySelector(".gallery__card");
+// END OF DECLARATIONS
 
 function closeForm() {
   modal.classList.remove("modal_opened");
@@ -60,18 +63,17 @@ function handleProfileFormSubmit(evt) {
 modalForm.addEventListener("submit", handleProfileFormSubmit);
 
 function getCardElement(data) {
-  let cardElement = cardTemplate.cloneNode(true).content;
+  let cardElement = cardTemplate.cloneNode(true);
+  console.log("cardElement", cardElement);
   let cardTitle = cardElement.querySelector(".gallery__location");
   let cardImage = cardElement.querySelector(".gallery__image");
   cardImage.setAttribute("src", data.link);
   cardImage.setAttribute("alt", data.name);
   cardTitle.textContent = data.name;
-  return cardElement.innerHTML;
+  return cardElement;
 }
 
 for (let initialCard of initialCards) {
   getCardElement(initialCard);
-  document
-    .querySelector(".gallery")
-    .insertAdjacentHTML("afterbegin", cardElement.innerHTML);
+  document.querySelector(".gallery").prepend(getCardElement(initialCard));
 }

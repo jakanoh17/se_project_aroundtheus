@@ -20,7 +20,7 @@
   width: 100%;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
-  min-height: 282px;
+  height: 282px;
   /* will correctly display images w/ any proportions */
   object-fit: cover;
 }
