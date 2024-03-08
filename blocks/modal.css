@@ -15,11 +15,12 @@
 }
 
 .modal__container {
+  box-sizing: border-box;
   padding: 0 36px 0;
   background-color: #fff;
   max-width: 430px;
-  width: 430px;
-  height: 325px;
+  width: 100%;
+  min-height: 325px;
   margin: 0 19px 0;
   border: 1px solid #000;
   border-radius: 10px;
@@ -91,6 +92,9 @@
 }
 
 @media screen and (max-width: 621px) {
+  .modal__container {
+    padding: 0 22px 0;
+  }
   .modal__close-button {
     height: 26px;
     width: 26px;

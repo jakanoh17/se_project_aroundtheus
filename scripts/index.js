@@ -47,8 +47,11 @@ function closeForm() {
 
 closeButton.addEventListener("click", closeForm);
 
-editButton.addEventListener("click", function () {
+editButton.addEventListener("click", function openModal() {
   modal.classList.add("modal_opened");
+});
+
+editButton.addEventListener("click", function inputProfileInfo() {
   modalNameInput.value = profileName.textContent;
   modalDescriptionInput.value = profileTitle.textContent;
 });
