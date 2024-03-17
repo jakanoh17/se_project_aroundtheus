@@ -33,61 +33,86 @@ const closeNewCardButton = document.querySelector(
 );
 const editProfileButton = document.querySelector(".profile__edit-button");
 const profileModal = document.querySelector(".modal_profile");
-const profModalNameInput = profileModal.querySelector(
+const profileModalNameInput = profileModal.querySelector(
   ".modal__input_type_name"
 );
-const profModalDescriptionInput = profileModal.querySelector(
+const profileModalDescriptionInput = profileModal.querySelector(
   ".modal__input_type_description"
 );
 const profileName = document.querySelector(".profile__name");
 const profileTitle = document.querySelector(".profile__title");
-const profModalForm = document.getElementById("edit-form");
+const profileModalForm = document.getElementById("edit-form");
 const cardTemplate = document
   .querySelector("#card-template")
   .content.querySelector(".gallery__card");
 const addCardButton = document.querySelector(".profile__add-button");
 const newCardModal = document.querySelector(".modal_new-card");
+const newCardModalForm = document.getElementById("new-card-form");
+const newCardTitle = newCardModal.querySelector(
+  ".modal__input_type_card-title"
+);
+const newCardLink = newCardModal.querySelector(".modal__input_type_card-link");
+
 // END OF DECLARATIONS
 
-function closeForm() {
+function closeProfileForm() {
   profileModal.classList.remove("modal_opened");
+}
+
+function closeNewCardForm() {
+  newCardModal.classList.remove("modal_opened");
 }
 
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
-  profileName.textContent = profModalNameInput.value;
-  profileTitle.textContent = profModalDescriptionInput.value;
-  closeForm();
+  profileName.textContent = profileModalNameInput.value;
+  profileTitle.textContent = profileModalDescriptionInput.value;
+  closeProfileForm();
 }
 
-initialCards.forEach((arrCard) => {
-  let cardElement = cardTemplate.cloneNode(true);
-  let cardTitle = cardElement.querySelector(".gallery__location");
-  let cardImage = cardElement.querySelector(".gallery__image");
-  cardImage.setAttribute("src", arrCard.link);
-  cardImage.setAttribute("alt", arrCard.name);
-  cardTitle.textContent = arrCard.name;
-  document.querySelector(".gallery").prepend(cardElement);
-});
+function handleNewCardFormSubmit(evt) {
+  let newCardElement = {
+    name: `${newCardTitle.value}`,
+    link: `${newCardLink.value}`,
+  };
+  initialCards.push(newCardElement);
+  evt.preventDefault();
+  closeNewCardForm();
+  populateCards();
+}
+
+profileModalForm.addEventListener("submit", handleProfileFormSubmit);
+
+newCardModalForm.addEventListener("submit", handleNewCardFormSubmit);
+
+function populateCards() {
+  initialCards.forEach((arrCard) => {
+    let cardElement = cardTemplate.cloneNode(true);
+    let cardTitle = cardElement.querySelector(".gallery__location");
+    let cardImage = cardElement.querySelector(".gallery__image");
+    cardImage.setAttribute("src", arrCard.link);
+    cardImage.setAttribute("alt", arrCard.name);
+    cardTitle.textContent = arrCard.name;
+    document.querySelector(".gallery").prepend(cardElement);
+  });
+}
+
+populateCards();
 
 // BUTTON EVENTS
-profModalForm.addEventListener("submit", handleProfileFormSubmit);
-
 editProfileButton.addEventListener("click", function openProfileModal() {
   profileModal.classList.add("modal_opened");
 });
 
 editProfileButton.addEventListener("click", function inputProfileInfo() {
-  profModalNameInput.value = profileName.textContent;
-  profModalDescriptionInput.value = profileTitle.textContent;
+  profileModalNameInput.value = profileName.textContent;
+  profileModalDescriptionInput.value = profileTitle.textContent;
 });
 
 addCardButton.addEventListener("click", () =>
   newCardModal.classList.add("modal_opened")
 );
 
-closeProfileButton.addEventListener("click", closeForm);
+closeProfileButton.addEventListener("click", closeProfileForm);
 
-closeNewCardButton.addEventListener("click", () =>
-  newCardModal.classList.remove("modal_opened")
-);
+closeNewCardButton.addEventListener("click", closeNewCardForm);
