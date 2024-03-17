@@ -52,7 +52,6 @@ const newCardTitle = newCardModal.querySelector(
   ".modal__input_type_card-title"
 );
 const newCardLink = newCardModal.querySelector(".modal__input_type_card-link");
-
 // END OF DECLARATIONS
 
 function closeProfileForm() {
@@ -116,3 +115,12 @@ addCardButton.addEventListener("click", () =>
 closeProfileButton.addEventListener("click", closeProfileForm);
 
 closeNewCardButton.addEventListener("click", closeNewCardForm);
+
+// LIKE BUTTON FUNCTIONALITY
+const likeButtons = document.querySelectorAll(".gallery__like-button");
+
+likeButtons.forEach((likeButton) => {
+  likeButton.addEventListener("click", () =>
+    likeButton.classList.add("gallery__like-button_selected")
+  );
+});

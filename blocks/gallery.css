@@ -46,9 +46,12 @@
 
 .gallery__like-button {
   width: 21px;
-  height: 18px;
+  height: 19px;
   margin-left: 2px;
   background-image: url("../images/heart_icon.svg");
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
   background-color: #fff;
   border: none;
   transition: opacity 0.2s ease-in;
@@ -57,4 +60,15 @@
 .gallery__like-button:hover {
   opacity: 50%;
   cursor: pointer;
+}
+
+.gallery__like-button_selected {
+  width: 21px;
+  height: 19px;
+  margin-left: 2px;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-color: #fff;
+  background-image: url("../images/active-like-button.svg");
 }
