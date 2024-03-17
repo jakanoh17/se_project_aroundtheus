@@ -57,6 +57,10 @@
   font-size: 24px;
   font-weight: 900;
 }
+.modal__form-title_form_new-card {
+  font-size: 23px;
+  line-height: 1.21;
+}
 
 .modal__input {
   border-style: none;
@@ -64,6 +68,7 @@
   padding: 0 0 13.3px;
   font-size: 14px;
   font-weight: 400;
+  line-height: 1.21;
 }
 
 .modal__input:focus {
@@ -74,7 +79,7 @@
   margin-bottom: 30px;
 }
 
-.modal__save-button {
+.modal__submit-button {
   font-size: 18px;
   font-weight: 400;
   margin-top: 48px;
@@ -86,7 +91,7 @@
   transition: opacity 0.2s ease-in;
 }
 
-.modal__save-button:hover {
+.modal__submit-button:hover {
   cursor: pointer;
   opacity: 80%;
 }

@@ -60,9 +60,12 @@
       <footer class="footer">
         <p class="footer__copyright">&copy; 2024 Around the U.S.</p>
       </footer>
-      <div class="modal">
+      <div class="modal modal_profile">
         <form class="modal__container" id="edit-form">
-          <button type="button" class="modal__close-button"></button>
+          <button
+            type="button"
+            class="modal__close-button modal__close-button_edit-profile"
+          ></button>
           <h2 class="modal__form-title">Edit Profile</h2>
           <input
             type="text"
@@ -76,7 +79,31 @@
             name="description"
             placeholder="Description"
           />
-          <button type="submit" class="modal__save-button">Save</button>
+          <button type="submit" class="modal__submit-button">Save</button>
+        </form>
+      </div>
+      <div class="modal modal_new-card">
+        <form class="modal__container" id="new-card-form">
+          <button
+            type="button"
+            class="modal__close-button modal__close-button_new-card"
+          ></button>
+          <h2 class="modal__form-title modal__form-title_form_new-card">
+            New place
+          </h2>
+          <input
+            type="text"
+            class="modal__input"
+            name="title"
+            placeholder="Title"
+          />
+          <input
+            type="url"
+            class="modal__input"
+            name="image-link"
+            placeholder="Image link"
+          />
+          <button type="submit" class="modal__submit-button">Create</button>
         </form>
       </div>
     </div>
