@@ -65,18 +65,12 @@ function handleProfileFormSubmit(evt) {
 
 modalForm.addEventListener("submit", handleProfileFormSubmit);
 
-function getCardElement(data) {
+initialCards.forEach((arrCard) => {
   let cardElement = cardTemplate.cloneNode(true);
-  console.log("cardElement", cardElement);
   let cardTitle = cardElement.querySelector(".gallery__location");
   let cardImage = cardElement.querySelector(".gallery__image");
-  cardImage.setAttribute("src", data.link);
-  cardImage.setAttribute("alt", data.name);
-  cardTitle.textContent = data.name;
-  return cardElement;
-}
-
-for (let initialCard of initialCards) {
-  getCardElement(initialCard);
-  document.querySelector(".gallery").prepend(getCardElement(initialCard));
-}
+  cardImage.setAttribute("src", arrCard.link);
+  cardImage.setAttribute("alt", arrCard.name);
+  cardTitle.textContent = arrCard.name;
+  document.querySelector(".gallery").prepend(cardElement);
+});
