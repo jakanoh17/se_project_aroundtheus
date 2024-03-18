@@ -124,3 +124,11 @@ likeButtons.forEach((likeButton) => {
     likeButton.classList.add("gallery__like-button_selected")
   );
 });
+
+const trashButtons = document.querySelectorAll(".gallery__trash-icon");
+
+trashButtons.forEach((trashButton) =>
+  trashButton.addEventListener("click", () =>
+    trashButton.closest(".gallery__card").remove()
+  )
+);

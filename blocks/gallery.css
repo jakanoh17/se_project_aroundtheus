@@ -14,6 +14,7 @@
   color: #000;
   display: grid;
   grid-template-rows: 282px 1fr;
+  position: relative;
 }
 
 .gallery__image {
@@ -23,6 +24,26 @@
   height: 282px;
   /* will correctly display images w/ any proportions */
   object-fit: cover;
+}
+
+.gallery__trash-icon {
+  position: absolute;
+  top: 18px;
+  right: 15px;
+  background-color: transparent;
+  background-image: url("../images/trash.svg");
+  background-position: center;
+  background-size: contain;
+  width: 18px;
+  height: 19.3px;
+  border: none;
+  background-repeat: no-repeat;
+  transition: opacity 0.2s ease-in;
+}
+
+.gallery__trash-icon:hover {
+  opacity: 60%;
+  cursor: pointer;
 }
 
 .gallery__info {
