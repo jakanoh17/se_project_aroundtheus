@@ -52,6 +52,9 @@ const newCardTitle = newCardModal.querySelector(
   ".modal__input_type_card-title"
 );
 const newCardLink = newCardModal.querySelector(".modal__input_type_card-link");
+const closeImageButtons = document.querySelectorAll(
+  ".enlarged-card__close-button"
+);
 // END OF DECLARATIONS
 
 function closeProfileForm() {
@@ -98,7 +101,7 @@ function populateCards() {
 
 populateCards();
 
-// BUTTON EVENTS
+// MISC BUTTON EVENTS
 editProfileButton.addEventListener("click", function openProfileModal() {
   profileModal.classList.add("modal_opened");
 });
@@ -116,7 +119,7 @@ closeProfileButton.addEventListener("click", closeProfileForm);
 
 closeNewCardButton.addEventListener("click", closeNewCardForm);
 
-// LIKE BUTTON FUNCTIONALITY
+// LIKE BUTTON
 const likeButtons = document.querySelectorAll(".gallery__like-button");
 
 likeButtons.forEach((likeButton) => {
@@ -125,6 +128,7 @@ likeButtons.forEach((likeButton) => {
   );
 });
 
+// DELETE CARD
 const trashButtons = document.querySelectorAll(".gallery__trash-icon");
 
 trashButtons.forEach((trashButton) =>
@@ -132,3 +136,38 @@ trashButtons.forEach((trashButton) =>
     trashButton.closest(".gallery__card").remove()
   )
 );
+
+// ENLARGE CARD IMAGE -- LOOK AT THIS FUNCTION FIRST
+const galleryImages = document.querySelectorAll(".gallery__image");
+const enlargedCardTemplate = document.getElementById("card-enlargement");
+
+function handleCardEnlargement(evt) {
+  let enlargedCardElement = enlargedCardTemplate
+    .cloneNode(true)
+    .content.querySelector(".enlarged-card");
+  enlargedCardElement.classList.remove("enlarged-card_hidden");
+  enlargedCardElement.querySelector(".enlarged-card__image").src =
+    evt.target.src;
+  enlargedCardElement.querySelector(".enlarged-card__caption").textContent =
+    evt.target.alt;
+  document
+    .querySelector(".enlarged-card-container")
+    .append(enlargedCardElement);
+
+  const closeButton = enlargedCardElement.querySelector(
+    ".enlarged-card__close-button"
+  );
+  closeButton.addEventListener("click", () => {
+    enlargedCardElement.classList.add("enlarged-card_hidden");
+  });
+}
+
+galleryImages.forEach((image) =>
+  image.addEventListener("click", handleCardEnlargement)
+);
+
+// const closeButton = document.querySelector(".enlarged-card__close-button");
+// closeButton.addEventListener("click", () => {
+//   const enlargedImage = closeButton.closest(".enlarged-card");
+//   enlargedImage.classList.add(".enlarged-card_hidden");
+// });

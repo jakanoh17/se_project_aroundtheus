@@ -57,7 +57,6 @@
                   class="gallery__like-button"
                   aria-label="like picture"
                 ></button>
-                <!-- gallery__like-button_selected -->
               </div>
             </div>
           </template>
@@ -112,6 +111,24 @@
           <button type="submit" class="modal__submit-button">Create</button>
         </form>
       </div>
+      <section class="enlarged-card-container">
+        <template id="card-enlargement">
+          <div class="enlarged-card_hidden enlarged-card page__enlarged-card">
+            <div class="enlarged-card__container">
+              <button
+                type="button"
+                class="enlarged-card__close-button"
+              ></button>
+              <img
+                src="source"
+                alt="enlarged image"
+                class="enlarged-card__image"
+              />
+              <p class="enlarged-card__caption">Name</p>
+            </div>
+          </div>
+        </template>
+      </section>
     </div>
     <script src="scripts/index.js"></script>
   </body>

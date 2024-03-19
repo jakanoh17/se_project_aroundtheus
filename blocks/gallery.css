@@ -26,6 +26,10 @@
   object-fit: cover;
 }
 
+.gallery__image:hover {
+  cursor: pointer;
+}
+
 .gallery__trash-icon {
   position: absolute;
   top: 18px;

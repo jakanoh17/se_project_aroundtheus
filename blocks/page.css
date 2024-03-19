@@ -3,8 +3,13 @@
   margin: 0 auto;
   font-family: "Inter", Arial, sans-serif;
   padding: 45px 20px 60px;
-  margin: 0 auto;
   color: #fff;
+}
+
+.page__enlarged-card {
+  position: fixed;
+  top: 0;
+  left: 0;
 }
 
 @media screen and (max-width: 320px) {

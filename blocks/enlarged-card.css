@@ -1,0 +1,51 @@
+.enlarged-card {
+  background-color: #00000080;
+  height: 100vh;
+  width: 100%;
+}
+
+.enlarged-card_hidden {
+  display: none;
+}
+
+.enlarged-card__close-button {
+  background-image: url("/images/close_icon.svg");
+  background-color: transparent;
+  border: none;
+  background-size: contain;
+  background-repeat: no-repeat;
+  height: 40px;
+  width: 40px;
+  margin-left: auto;
+  position: relative;
+  bottom: 9px;
+  left: 49px;
+  transition: opacity 0.2s ease-in;
+}
+
+.enlarged-card__close-button:hover {
+  opacity: 60%;
+  cursor: pointer;
+}
+
+.enlarged-card__container {
+  margin: auto;
+  height: 100%;
+  width: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+}
+
+.enlarged-card__image {
+  max-width: 75vw;
+  max-height: 75vh;
+  object-fit: none;
+}
+
+.enlarged-card__caption {
+  font-size: 12px;
+  margin-top: 10px;
+  margin-bottom: 0;
+}
