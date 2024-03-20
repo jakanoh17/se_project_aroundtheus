@@ -80,7 +80,12 @@ function handleNewCardFormSubmit(evt) {
   initialCards.push(newCardElement);
   evt.preventDefault();
   closeNewCardForm();
+
+  document.querySelector(".gallery").replaceChildren("");
   populateCards();
+  enableLikeButton();
+  enableDeleteButton();
+  enableCardEnlargement();
 }
 
 profileModalForm.addEventListener("submit", handleProfileFormSubmit);
@@ -98,7 +103,6 @@ function populateCards() {
     document.querySelector(".gallery").prepend(cardElement);
   });
 }
-
 populateCards();
 
 // MISC BUTTON EVENTS
@@ -120,54 +124,57 @@ closeProfileButton.addEventListener("click", closeProfileForm);
 closeNewCardButton.addEventListener("click", closeNewCardForm);
 
 // LIKE BUTTON
-const likeButtons = document.querySelectorAll(".gallery__like-button");
+function enableLikeButton() {
+  const likeButtons = document.querySelectorAll(".gallery__like-button");
 
-likeButtons.forEach((likeButton) => {
-  likeButton.addEventListener("click", () =>
-    likeButton.classList.add("gallery__like-button_selected")
-  );
-});
-
-// DELETE CARD
-const trashButtons = document.querySelectorAll(".gallery__trash-icon");
-
-trashButtons.forEach((trashButton) =>
-  trashButton.addEventListener("click", () =>
-    trashButton.closest(".gallery__card").remove()
-  )
-);
-
-// ENLARGE CARD IMAGE -- LOOK AT THIS FUNCTION FIRST
-const galleryImages = document.querySelectorAll(".gallery__image");
-const enlargedCardTemplate = document.getElementById("card-enlargement");
-
-function handleCardEnlargement(evt) {
-  let enlargedCardElement = enlargedCardTemplate
-    .cloneNode(true)
-    .content.querySelector(".enlarged-card");
-  enlargedCardElement.classList.remove("enlarged-card_hidden");
-  enlargedCardElement.querySelector(".enlarged-card__image").src =
-    evt.target.src;
-  enlargedCardElement.querySelector(".enlarged-card__caption").textContent =
-    evt.target.alt;
-  document
-    .querySelector(".enlarged-card-container")
-    .append(enlargedCardElement);
-
-  const closeButton = enlargedCardElement.querySelector(
-    ".enlarged-card__close-button"
-  );
-  closeButton.addEventListener("click", () => {
-    enlargedCardElement.classList.add("enlarged-card_hidden");
+  likeButtons.forEach((likeButton) => {
+    likeButton.addEventListener("click", () =>
+      likeButton.classList.add("gallery__like-button_selected")
+    );
   });
 }
+enableLikeButton();
 
-galleryImages.forEach((image) =>
-  image.addEventListener("click", handleCardEnlargement)
-);
+// DELETE CARD
+function enableDeleteButton() {
+  const trashButtons = document.querySelectorAll(".gallery__trash-icon");
 
-// const closeButton = document.querySelector(".enlarged-card__close-button");
-// closeButton.addEventListener("click", () => {
-//   const enlargedImage = closeButton.closest(".enlarged-card");
-//   enlargedImage.classList.add(".enlarged-card_hidden");
-// });
+  trashButtons.forEach((trashButton) =>
+    trashButton.addEventListener("click", () =>
+      trashButton.closest(".gallery__card").remove()
+    )
+  );
+}
+enableDeleteButton();
+
+// ENLARGE CARD IMAGE -- LOOK AT THIS FUNCTION FIRST
+function enableCardEnlargement() {
+  const galleryImages = document.querySelectorAll(".gallery__image");
+  const enlargedCardTemplate = document.getElementById("card-enlargement");
+
+  function handleCardEnlargement(evt) {
+    let enlargedCardElement = enlargedCardTemplate
+      .cloneNode(true)
+      .content.querySelector(".enlarged-card");
+    enlargedCardElement.classList.remove("enlarged-card_hidden");
+    enlargedCardElement.querySelector(".enlarged-card__image").src =
+      evt.target.src;
+    enlargedCardElement.querySelector(".enlarged-card__caption").textContent =
+      evt.target.alt;
+    document
+      .querySelector(".enlarged-card-container")
+      .append(enlargedCardElement);
+
+    const closeButton = enlargedCardElement.querySelector(
+      ".enlarged-card__close-button"
+    );
+    closeButton.addEventListener("click", () => {
+      enlargedCardElement.classList.add("enlarged-card_hidden");
+    });
+  }
+
+  galleryImages.forEach((image) =>
+    image.addEventListener("click", handleCardEnlargement)
+  );
+}
+enableCardEnlargement();

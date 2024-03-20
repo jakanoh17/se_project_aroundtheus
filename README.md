@@ -8,11 +8,21 @@
 
 **Intro**
 
-A simple landing page that showcases a photography profile with pictures of various locations around the US. Webpages makes use of grid and flex layouts, responsive designs, and some basic scripting.
+A simple landing page that showcases a photography profile with pictures of various locations around the US. This webpage makes use of grid and flex layouts, responsive designs, and the following scrpting functionalities:
 
-**Figma**
+- Event listeners:
+  - Delete card
+  - Opening/closing modal forms with transperancy tranitions
+  - Enlarge card image
+  - Like button
+- Submit forms:
+  - Create new card
+  - Edit profile details
 
-- [Link to the project on Figma](https://www.figma.com/file/ii4xxsJ0ghevUOcssTlHZv/Sprint-3%3A-Around-the-US?node-id=0%3A1)
+**Figma design links**
+
+- [General design](https://www.figma.com/file/ii4xxsJ0ghevUOcssTlHZv/Sprint-3%3A-Around-the-US?node-id=0%3A1)
+  - [Card functionalities](<https://www.figma.com/file/JFPhASqvZ5pBjQV2ouUlim/Sprint-5_-Around-The-U.S.-_-desktop-%2B-mobile-(Copy)?t=3hvVWRz9LUFsxyNn-6>)
 
 **Images**
 
