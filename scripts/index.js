@@ -47,10 +47,11 @@ const newCardTitle = newCardModal.querySelector(
   ".modal__input_type_card-title"
 );
 const newCardLink = newCardModal.querySelector(".modal__input_type_card-link");
-const closeImageButtons = document.querySelectorAll(
-  ".enlarged-card__close-button"
-);
 const gallery = document.querySelector(".gallery");
+const enlargedCardModal = document.querySelector(".modal_type_enlarged-card");
+const enlargedImage = enlargedCardModal.querySelector(".modal__enlarged-image");
+const enlargedCardCaption = enlargedCardModal.querySelector(".modal__caption");
+
 // END OF DECLARATIONS
 
 // INITIAL CARDS
@@ -75,8 +76,7 @@ function handleNewCardFormSubmit(evt) {
   closePopup(newCardModal);
 
   evt.preventDefault();
-  newCardTitle.value = "";
-  newCardLink.value = "";
+  evt.target.reset();
 }
 
 function createCard(item) {
@@ -117,9 +117,8 @@ function handleProfileFormSubmit(evt) {
 profileModalForm.addEventListener("submit", handleProfileFormSubmit);
 
 // MISC BUTTON EVENTS
-editProfileButton.addEventListener("click", () => openPopup(profileModal));
-
 editProfileButton.addEventListener("click", function inputProfileInfo() {
+  openPopup(profileModal);
   profileModalNameInput.value = profileName.textContent;
   profileModalDescriptionInput.value = profileTitle.textContent;
 });
@@ -134,21 +133,11 @@ function enableLikeButton(card) {
   const newLikeButton = card.querySelector(".gallery__like-button");
 
   newLikeButton.addEventListener("click", () => {
-    console.log(newLikeButton.classList);
     newLikeButton.classList.toggle("gallery__like-button_selected");
   });
 }
-initialCards.forEach(enableLikeButton);
 
 // DELETE CARD
-const trashButtons = document.querySelectorAll(".gallery__trash-icon");
-
-trashButtons.forEach((trashButton) =>
-  trashButton.addEventListener("click", () =>
-    trashButton.closest(".gallery__card").remove()
-  )
-);
-
 function enableDeleteButton(card) {
   const newTrashButton = card.querySelector(".gallery__trash-icon");
 
@@ -159,17 +148,10 @@ function enableDeleteButton(card) {
 
 // ENLARGE CARD IMAGE
 function enableCardEnlargement(card) {
-  const enlargedCardModal = document.querySelector(".modal_type_enlarged-card");
-  const enlargedImage = enlargedCardModal.querySelector(
-    ".modal__enlarged-image"
-  );
-  const enlargedCardCaption =
-    enlargedCardModal.querySelector(".modal__caption");
-
   const galleryCardImage = card.querySelector(".gallery__image");
 
   function handleCardEnlargement(evt) {
-    enlargedCardModal.classList.add("modal_opened");
+    openPopup(enlargedCardModal);
     enlargedImage.src = evt.target.src;
     enlargedImage.alt = evt.target.alt;
     enlargedCardCaption.textContent = evt.target.alt;
@@ -177,6 +159,3 @@ function enableCardEnlargement(card) {
 
   galleryCardImage.addEventListener("click", handleCardEnlargement);
 }
-
-const galleryImages = document.querySelectorAll(".gallery__image");
-galleryImages.forEach(enableCardEnlargement);
