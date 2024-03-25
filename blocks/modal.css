@@ -100,6 +100,33 @@
   opacity: 80%;
 }
 
+.modal_type_enlarged-card {
+  flex-direction: column;
+}
+
+.modal__close-button_element_enlarged-card {
+  margin-left: auto;
+  position: absolute;
+  bottom: 9px;
+  left: 49px;
+}
+
+.modal__enlarged-card-container {
+  position: relative;
+  margin: auto;
+}
+
+.modal__enlarged-image {
+  max-width: 75vw;
+  max-height: 75vh;
+}
+
+.modal__caption {
+  font-size: 12px;
+  margin-top: 10px;
+  margin-bottom: 0;
+}
+
 @media screen and (max-width: 621px) {
   .modal__container {
     padding: 0 22px 0;
