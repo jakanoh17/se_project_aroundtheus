@@ -12,17 +12,20 @@ A simple landing page that showcases a photography profile with pictures of vari
 
 - Event listeners:
   - Delete card
-  - Opening/closing modal forms with transperancy tranitions
+  - Opening/closing modal forms with transperancy transitions
+    - Clicking cloe button or document background and pressing Esc button
   - Enlarge card image
   - Like button
 - Submit forms:
   - Create new card
   - Edit profile details
+- Form validation
 
 **Figma design links**
 
 - [General design](https://www.figma.com/file/ii4xxsJ0ghevUOcssTlHZv/Sprint-3%3A-Around-the-US?node-id=0%3A1)
   - [Card functionalities](<https://www.figma.com/file/JFPhASqvZ5pBjQV2ouUlim/Sprint-5_-Around-The-U.S.-_-desktop-%2B-mobile-(Copy)?t=3hvVWRz9LUFsxyNn-6>)
+  - [Form validation](https://www.figma.com/file/N3zUeequnpvMX807FfYAZW/Sprint-6-Around-The-U.S.?type=design&node-id=0-1&mode=design&t=ivOoCdpC0mdJgJww-0)
 
 **Images**
 
