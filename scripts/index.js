@@ -51,7 +51,8 @@ const gallery = document.querySelector(".gallery");
 const enlargedCardModal = document.querySelector(".modal_type_enlarged-card");
 const enlargedImage = enlargedCardModal.querySelector(".modal__enlarged-image");
 const enlargedCardCaption = enlargedCardModal.querySelector(".modal__caption");
-
+const modalInputs = document.querySelectorAll(".modal__input");
+const forms = document.forms;
 // END OF DECLARATIONS
 
 // INITIAL CARDS
@@ -77,6 +78,7 @@ function handleNewCardFormSubmit(evt) {
 
   evt.preventDefault();
   evt.target.reset();
+  enableValidation();
 }
 
 function createCard(item) {
@@ -97,15 +99,10 @@ function populateNewCard(newCard) {
   gallery.prepend(newCard);
 }
 
-addCardButton.addEventListener("click", () => openPopup(newCardModal));
-
-function closePopup(popup) {
-  popup.classList.remove("modal_opened");
-}
-
-function openPopup(popup) {
-  popup.classList.add("modal_opened");
-}
+addCardButton.addEventListener("click", () => {
+  openPopup(newCardModal);
+  toggleSaveButton(newCardModalForm);
+});
 
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
@@ -121,11 +118,6 @@ editProfileButton.addEventListener("click", function inputProfileInfo() {
   openPopup(profileModal);
   profileModalNameInput.value = profileName.textContent;
   profileModalDescriptionInput.value = profileTitle.textContent;
-});
-
-closeModalButtons.forEach((button) => {
-  const popup = button.closest(".modal");
-  button.addEventListener("click", () => closePopup(popup));
 });
 
 // LIKE BUTTONS
@@ -158,4 +150,40 @@ function enableCardEnlargement(card) {
   }
 
   galleryCardImage.addEventListener("click", handleCardEnlargement);
+}
+
+// CLOSING MODAL
+closeModalButtons.forEach((button) => {
+  const popup = button.closest(".modal");
+  button.addEventListener("click", () => closePopup(popup));
+});
+
+function closePopupFromOutsideForm(popup) {
+  popup.addEventListener("click", (evt) => {
+    if (evt.target === popup) {
+      closePopup(evt.currentTarget);
+    }
+  });
+  document.addEventListener("keydown", (evt) => {
+    if (evt.key === "Escape") {
+      closePopup(popup);
+    }
+  });
+}
+
+function closePopup(popup) {
+  popup.classList.remove("modal_opened");
+}
+
+function openPopup(popup) {
+  popup.classList.add("modal_opened");
+  enableValidation({
+    formSelector: ".popup__form",
+    inputSelector: ".popup__input",
+    submitButtonSelector: ".popup__button",
+    inactiveButtonClass: "popup__button_disabled",
+    inputErrorClass: "popup__input_type_error",
+    errorClass: "popup__error_visible",
+  });
+  closePopupFromOutsideForm(popup);
 }
