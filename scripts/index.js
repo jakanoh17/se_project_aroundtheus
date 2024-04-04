@@ -51,7 +51,6 @@ const gallery = document.querySelector(".gallery");
 const enlargedCardModal = document.querySelector(".modal_type_enlarged-card");
 const enlargedImage = enlargedCardModal.querySelector(".modal__enlarged-image");
 const enlargedCardCaption = enlargedCardModal.querySelector(".modal__caption");
-const modalInputs = document.querySelectorAll(".modal__input");
 const forms = document.forms;
 // END OF DECLARATIONS
 
@@ -78,7 +77,6 @@ function handleNewCardFormSubmit(evt) {
 
   evt.preventDefault();
   evt.target.reset();
-  enableValidation();
 }
 
 function createCard(item) {
@@ -158,32 +156,34 @@ closeModalButtons.forEach((button) => {
   button.addEventListener("click", () => closePopup(popup));
 });
 
-function closePopupFromOutsideForm(popup) {
-  popup.addEventListener("click", (evt) => {
-    if (evt.target === popup) {
-      closePopup(evt.currentTarget);
-    }
-  });
-  document.addEventListener("keydown", (evt) => {
-    if (evt.key === "Escape") {
-      closePopup(popup);
-    }
-  });
+function closeWithOutsideClick(evt) {
+  if (evt.target === evt.currentTarget) {
+    closePopup(evt.currentTarget);
+  }
+}
+
+function closeWithEsc(evt) {
+  if (evt.key === "Escape") {
+    closePopup(evt.currentTarget.querySelector(".modal_opened"));
+  }
 }
 
 function closePopup(popup) {
   popup.classList.remove("modal_opened");
+  document.removeEventListener("keydown", closeWithEsc);
+  popup.removeEventListener("click", closeWithOutsideClick);
 }
 
 function openPopup(popup) {
   popup.classList.add("modal_opened");
   enableValidation({
     formSelector: ".popup__form",
-    inputSelector: ".popup__input",
-    submitButtonSelector: ".popup__button",
-    inactiveButtonClass: "popup__button_disabled",
-    inputErrorClass: "popup__input_type_error",
-    errorClass: "popup__error_visible",
+    inputSelector: ".modal__input",
+    submitButtonSelector: ".modal__submit-button",
+    inactiveButtonClass: "modal__submit-button_inactive",
+    inputErrorClass: "modal__input_invalid",
+    errorClass: "modal__error-message_hidden",
   });
-  closePopupFromOutsideForm(popup);
+  popup.addEventListener("click", closeWithOutsideClick);
+  document.addEventListener("keydown", closeWithEsc);
 }
