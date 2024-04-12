@@ -1,35 +1,33 @@
-const modalInputs = document.querySelectorAll(".modal__input");
-// const validationConfig = {
-//   formSelector: ".popup__form",
-//   inputSelector: ".modal__input",
-//   submitButtonSelector: ".modal__submit-button",
-//   inactiveButtonClass: "modal__submit-button_inactive",
-//   inputErrorClass: "modal__input_invalid",
-//   errorClass: "modal__error-message_hidden",
-// };
-// END OF DECLARATIONS
-
 function enableValidation(validationConfig) {
+  const modalInputs = document.querySelectorAll(validationConfig.inputSelector);
   modalInputs.forEach((input) => {
-    toggleSaveButton(input.closest("form"), validationConfig);
+    toggleSaveButton(
+      input.closest(validationConfig.formSelector),
+      validationConfig
+    );
     input.addEventListener("input", (evt) => {
-      toggleSaveButton(input.closest("form"), validationConfig);
       toggleInputError(evt.target, validationConfig);
+      toggleSaveButton(
+        input.closest(validationConfig.formSelector),
+        validationConfig
+      );
     });
   });
+
+  enableAddCardButton(validationConfig);
 }
 
 function showErrorMessage(inputElement, validationConfig) {
   const errorMessage = inputElement.validationMessage;
   const errorElement = document.querySelector(`.${inputElement.id}-err-msg`);
-  inputElement.classList.add(validationConfig.inputErrorClass);
   errorElement.textContent = errorMessage;
-  errorElement.classList.remove(validationConfig.errorClass);
+  errorElement.classList.add(validationConfig.errorClass);
+  inputElement.classList.add(validationConfig.inputErrorClass);
 }
 
 function hideErrorMessage(inputElement, validationConfig) {
   const errorElement = document.querySelector(`.${inputElement.id}-err-msg`);
-  errorElement.classList.add(validationConfig.errorClass);
+  errorElement.classList.remove(validationConfig.errorClass);
   inputElement.classList.remove(validationConfig.inputErrorClass);
 }
 
@@ -62,3 +60,12 @@ function toggleInputError(inputElement, validationConfig) {
     hideErrorMessage(inputElement, validationConfig);
   }
 }
+
+enableValidation({
+  formSelector: ".modal__form",
+  inputSelector: ".modal__input",
+  submitButtonSelector: ".modal__submit-button",
+  inactiveButtonClass: "modal__submit-button_inactive",
+  inputErrorClass: "modal__input_invalid",
+  errorClass: "modal__error-message_visible",
+});

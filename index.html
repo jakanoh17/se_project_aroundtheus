@@ -66,7 +66,7 @@
         <p class="footer__copyright">&copy; 2024 Around the U.S.</p>
       </footer>
       <div class="modal modal_type_profile">
-        <form class="modal__container" id="edit-form">
+        <form class="modal__form" id="edit-form">
           <button
             type="button"
             class="modal__close-button modal__close-button_edit-profile"
@@ -83,7 +83,7 @@
             required
           />
           <span
-            class="modal__error-message modal__error-message_hidden profile-name-err-msg"
+            class="modal__error-message modal__error-message_visible profile-name-err-msg"
           ></span>
           <input
             id="description"
@@ -96,7 +96,7 @@
             required
           />
           <span
-            class="modal__error-message modal__error-message_hidden description-err-msg"
+            class="modal__error-message modal__error-message_visible description-err-msg"
           ></span>
           <button type="submit" class="modal__submit-button" disabled>
             Save
@@ -104,7 +104,7 @@
         </form>
       </div>
       <div class="modal modal_type_new-card">
-        <form class="modal__container" id="new-card-form">
+        <form class="modal__form" id="new-card-form">
           <button
             type="button"
             class="modal__close-button modal__close-button_new-card"
@@ -123,7 +123,7 @@
             required
           />
           <span
-            class="modal__error-message modal__error-message_hidden new-card-title-err-msg"
+            class="modal__error-message modal__error-message_visible new-card-title-err-msg"
           ></span>
           <input
             id="new-card-link"
@@ -134,7 +134,7 @@
             required
           />
           <span
-            class="modal__error-message modal__error-message_hidden new-card-link-err-msg"
+            class="modal__error-message modal__error-message_visible new-card-link-err-msg"
           ></span>
           <button
             type="submit"

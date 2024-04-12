@@ -97,11 +97,6 @@ function populateNewCard(newCard) {
   gallery.prepend(newCard);
 }
 
-addCardButton.addEventListener("click", () => {
-  openPopup(newCardModal);
-  toggleSaveButton(newCardModalForm);
-});
-
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
   profileName.textContent = profileModalNameInput.value;
@@ -109,6 +104,12 @@ function handleProfileFormSubmit(evt) {
   closePopup(profileModal);
 }
 
+function enableAddCardButton(validationConfig) {
+  addCardButton.addEventListener("click", () => {
+    openPopup(newCardModal);
+    toggleSaveButton(newCardModalForm, validationConfig);
+  });
+}
 profileModalForm.addEventListener("submit", handleProfileFormSubmit);
 
 // MISC BUTTON EVENTS
@@ -176,14 +177,6 @@ function closePopup(popup) {
 
 function openPopup(popup) {
   popup.classList.add("modal_opened");
-  enableValidation({
-    formSelector: ".popup__form",
-    inputSelector: ".modal__input",
-    submitButtonSelector: ".modal__submit-button",
-    inactiveButtonClass: "modal__submit-button_inactive",
-    inputErrorClass: "modal__input_invalid",
-    errorClass: "modal__error-message_hidden",
-  });
   popup.addEventListener("click", closeWithOutsideClick);
   document.addEventListener("keydown", closeWithEsc);
 }
