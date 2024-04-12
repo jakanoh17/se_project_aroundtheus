@@ -1,10 +1,6 @@
 function enableValidation(validationConfig) {
   const modalInputs = document.querySelectorAll(validationConfig.inputSelector);
   modalInputs.forEach((input) => {
-    toggleSaveButton(
-      input.closest(validationConfig.formSelector),
-      validationConfig
-    );
     input.addEventListener("input", (evt) => {
       toggleInputError(evt.target, validationConfig);
       toggleSaveButton(
