@@ -23,13 +23,13 @@ class FormValidator {
     });
   }
 
-  _toggleSubmitButton() {
-    if (!this._findInvalidInputs()) {
-      this._submitButton.removeAttribute("disabled");
-      this._submitButton.classList.remove(this.settings.inactiveButtonClass);
-    } else {
+  toggleSubmitButton(param) {
+    if (param === "disable" || this._findInvalidInputs()) {
       this._submitButton.setAttribute("disabled", true);
       this._submitButton.classList.add(this.settings.inactiveButtonClass);
+    } else {
+      this._submitButton.removeAttribute("disabled");
+      this._submitButton.classList.remove(this.settings.inactiveButtonClass);
     }
   }
 
@@ -60,7 +60,7 @@ class FormValidator {
     modalInputs.forEach((input) => {
       input.addEventListener("input", (evt) => {
         this._toggleInputError(evt.target);
-        this._toggleSubmitButton();
+        this.toggleSubmitButton();
       });
     });
   }
@@ -71,14 +71,11 @@ const newCardFormValidator = new FormValidator(
   newCardModalForm
 );
 newCardFormValidator.enableValidation();
-// newCardModalForm.addEventListener("submit", () => {
-//   newCardFormValidator._toggleSubmitButton();
-// });
 
-const profileFormValidator = new FormValidator(
+window.profileFormValidator = new FormValidator(
   validationConfig,
   profileModalForm
 );
-profileFormValidator.enableValidation();
+window.profileFormValidator.enableValidation();
 
-export { newCardFormValidator, validationConfig };
+export { newCardFormValidator };

@@ -1,15 +1,4 @@
-import { newCardFormValidator } from "./FormValidator";
-
-// if I can figure out the import then delete vconfig variable
-// const validationConfig = {
-//   formSelector: ".modal__form",
-//   inputSelector: ".modal__input",
-//   submitButtonSelector: ".modal__submit-button",
-//   inactiveButtonClass: "modal__submit-button_inactive",
-//   inputErrorClass: "modal__input_invalid",
-//   errorClass: "modal__error-message_visible",
-// };
-//
+import { newCardFormValidator } from "./FormValidator.js";
 
 class Card {
   constructor(data, cardSelector, handleImageClick) {
@@ -79,15 +68,7 @@ function handleNewCardFormSubmit(evt) {
 
   evt.preventDefault();
   evt.target.reset();
-  newCardFormValidator._toggleSubmitButton();
-  //   delete below if you figure out the import
-  //   evt.target
-  //     .querySelector(validationConfig.submitButtonSelector)
-  //     .setAttribute("disabled", true);
-  //   evt.target
-  //     .querySelector(validationConfig.submitButtonSelector)
-  //     .classList.add(validationConfig.inactiveButtonClass);
-  //
+  newCardFormValidator.toggleSubmitButton();
 }
 
 newCardModalForm.addEventListener("submit", handleNewCardFormSubmit);

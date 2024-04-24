@@ -50,32 +50,33 @@ const enlargedImage = enlargedCardModal.querySelector(".modal__enlarged-image");
 const enlargedCardCaption = enlargedCardModal.querySelector(".modal__caption");
 // END OF DECLARATIONS
 
-function handleProfileFormSubmit(evt) {
-  profileName.textContent = profileModalNameInput.value;
-  profileTitle.textContent = profileModalDescriptionInput.value;
-  closePopup(profileModal);
-  evt.preventDefault();
-}
-
+// OPENING MODALS
 addCardButton.addEventListener("click", () => {
   openPopup(newCardModal);
 });
-profileModalForm.addEventListener("submit", handleProfileFormSubmit);
 
-// MISC BUTTON EVENTS
 editProfileButton.addEventListener("click", function inputProfileInfo() {
   openPopup(profileModal);
   profileModalNameInput.value = profileName.textContent;
   profileModalDescriptionInput.value = profileTitle.textContent;
 });
 
-// ENLARGE CARD IMAGE
-function handleCardEnlargement(evt) {
-  openPopup(enlargedCardModal);
-  enlargedImage.src = evt.target.src;
-  enlargedImage.alt = evt.target.alt;
-  enlargedCardCaption.textContent = evt.target.alt;
+function openPopup(popup) {
+  popup.classList.add("modal_opened");
+  popup.addEventListener("click", closeWithOutsideClick);
+  document.addEventListener("keydown", closeWithEsc);
 }
+
+// SUBMIT PROFILE MODAL
+function handleProfileFormSubmit(evt) {
+  profileName.textContent = profileModalNameInput.value;
+  profileTitle.textContent = profileModalDescriptionInput.value;
+  closePopup(profileModal);
+  evt.preventDefault();
+  window.profileFormValidator.toggleSubmitButton("disable");
+}
+
+profileModalForm.addEventListener("submit", handleProfileFormSubmit);
 
 // CLOSING MODAL
 closeModalButtons.forEach((button) => {
@@ -97,12 +98,14 @@ function closeWithEsc(evt) {
 
 function closePopup(popup) {
   popup.classList.remove("modal_opened");
-  document.removeEventListener("keydown", closeWithEsc);
   popup.removeEventListener("click", closeWithOutsideClick);
+  document.removeEventListener("keydown", closeWithEsc);
 }
 
-function openPopup(popup) {
-  popup.classList.add("modal_opened");
-  popup.addEventListener("click", closeWithOutsideClick);
-  document.addEventListener("keydown", closeWithEsc);
+// ENLARGE CARD IMAGE
+function handleCardEnlargement(evt) {
+  openPopup(enlargedCardModal);
+  enlargedImage.src = evt.target.src;
+  enlargedImage.alt = evt.target.alt;
+  enlargedCardCaption.textContent = evt.target.alt;
 }
