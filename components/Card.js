@@ -1,6 +1,4 @@
-import { newCardFormValidator } from "./FormValidator.js";
-
-class Card {
+export default class Card {
   constructor(data, cardSelector, handleImageClick) {
     this.data = data;
     this.cardSelector = cardSelector;
@@ -40,35 +38,6 @@ class Card {
 
     this._setEventListeners();
 
-    gallery.prepend(this._element);
+    return this._element;
   }
 }
-
-// INITIAL CARDS
-initialCards.forEach((data) => {
-  const card = new Card(data, "#card-template", handleCardEnlargement);
-  card.render();
-});
-
-// NEW CARDS
-
-function handleNewCardFormSubmit(evt) {
-  const newCardElement = {
-    name: `${newCardTitle.value}`,
-    link: `${newCardLink.value}`,
-  };
-  const card = new Card(
-    newCardElement,
-    "#card-template",
-    handleCardEnlargement
-  );
-  card.render();
-
-  closePopup(newCardModal);
-
-  evt.preventDefault();
-  evt.target.reset();
-  newCardFormValidator.toggleSubmitButton();
-}
-
-newCardModalForm.addEventListener("submit", handleNewCardFormSubmit);

@@ -1,3 +1,6 @@
+import FormValidator from "../components/FormValidator.js";
+import Card from "../components/Card.js";
+
 const initialCards = [
   {
     name: "Yosemite Valley",
@@ -48,7 +51,50 @@ const gallery = document.querySelector(".gallery");
 const enlargedCardModal = document.querySelector(".modal_type_enlarged-card");
 const enlargedImage = enlargedCardModal.querySelector(".modal__enlarged-image");
 const enlargedCardCaption = enlargedCardModal.querySelector(".modal__caption");
+const validationConfig = {
+  formSelector: ".modal__form",
+  inputSelector: ".modal__input",
+  submitButtonSelector: ".modal__submit-button",
+  inactiveButtonClass: "modal__submit-button_inactive",
+  inputErrorClass: "modal__input_invalid",
+  errorClass: "modal__error-message_visible",
+};
+const newCardFormValidator = new FormValidator(
+  validationConfig,
+  newCardModalForm
+);
+
+const profileFormValidator = new FormValidator(
+  validationConfig,
+  profileModalForm
+);
 // END OF DECLARATIONS
+
+// INITIAL CARDS
+function createCard(data) {
+  const cardElement = new Card(data, "#card-template", handleCardEnlargement);
+  return cardElement.render();
+}
+initialCards.forEach((cardData) => {
+  gallery.prepend(createCard(cardData));
+});
+// NEW CARDS
+
+function handleNewCardFormSubmit(evt) {
+  const newCardData = {
+    name: `${newCardTitle.value}`,
+    link: `${newCardLink.value}`,
+  };
+  gallery.prepend(createCard(newCardData));
+
+  closePopup(newCardModal);
+
+  evt.preventDefault();
+  evt.target.reset();
+  newCardFormValidator.resetValidation();
+}
+
+newCardModalForm.addEventListener("submit", handleNewCardFormSubmit);
 
 // OPENING MODALS
 addCardButton.addEventListener("click", () => {
@@ -59,6 +105,7 @@ editProfileButton.addEventListener("click", function inputProfileInfo() {
   openPopup(profileModal);
   profileModalNameInput.value = profileName.textContent;
   profileModalDescriptionInput.value = profileTitle.textContent;
+  profileFormValidator.resetValidation();
 });
 
 function openPopup(popup) {
@@ -73,7 +120,6 @@ function handleProfileFormSubmit(evt) {
   profileTitle.textContent = profileModalDescriptionInput.value;
   closePopup(profileModal);
   evt.preventDefault();
-  window.profileFormValidator.toggleSubmitButton("disable");
 }
 
 profileModalForm.addEventListener("submit", handleProfileFormSubmit);
@@ -109,3 +155,37 @@ function handleCardEnlargement(evt) {
   enlargedImage.alt = evt.target.alt;
   enlargedCardCaption.textContent = evt.target.alt;
 }
+
+// VALIDATION
+newCardFormValidator.enableValidation();
+profileFormValidator.enableValidation();
+
+// // COULD BE IMPROVED
+
+// // You can universally create instances of validators for all forms in the project storing them inside one object formValidators.  And then you can take any validator using attribute name of the form where you need to disable/enable the submit button or remove errors.
+
+// // define an object for storing validators
+// const formValidators = {}
+
+// const enableValidation = (config) => {
+//   const formList = Array.from(document.querySelectorAll(config.formSelector))
+//   formList.forEach((formElement) => {
+//     const validator = new FormValidator(config, formElement)
+//     // here you get the name of the form
+//     const formName = formElement.getAttribute('name')
+
+// // ***POINT OF CONFUSION***
+//    // here you store the validator using the `name` of the form
+//     formValidators[formName] = validator;
+//    validator.enableValidation();
+//   });
+// };
+
+// enableValidation(config);
+// // And now you can use them for disabling buttons or clearing errors:
+
+// formValidators[ profileForm.getAttribute('name') ].resetValidation()
+
+// // or you can use a string – the name of the form (you know it from `index.html`)
+
+// formValidators['profile-form'].resetValidation()

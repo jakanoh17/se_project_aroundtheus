@@ -1,17 +1,9 @@
-const validationConfig = {
-  formSelector: ".modal__form",
-  inputSelector: ".modal__input",
-  submitButtonSelector: ".modal__submit-button",
-  inactiveButtonClass: "modal__submit-button_inactive",
-  inputErrorClass: "modal__input_invalid",
-  errorClass: "modal__error-message_visible",
-};
-
-class FormValidator {
+export default class FormValidator {
   constructor(settings, form) {
     this.settings = settings;
     this.form = form;
     this._submitButton = form.querySelector(this.settings.submitButtonSelector);
+    this._inputList = this.form.querySelectorAll(this.settings.inputSelector);
   }
 
   _findInvalidInputs() {
@@ -23,7 +15,7 @@ class FormValidator {
     });
   }
 
-  toggleSubmitButton(param) {
+  _toggleSubmitButton(param) {
     if (param === "disable" || this._findInvalidInputs()) {
       this._submitButton.setAttribute("disabled", true);
       this._submitButton.classList.add(this.settings.inactiveButtonClass);
@@ -56,26 +48,18 @@ class FormValidator {
   }
 
   enableValidation() {
-    const modalInputs = this.form.querySelectorAll(this.settings.inputSelector);
-    modalInputs.forEach((input) => {
-      input.addEventListener("input", (evt) => {
+    this._inputList.forEach((inputElement) => {
+      inputElement.addEventListener("input", (evt) => {
         this._toggleInputError(evt.target);
-        this.toggleSubmitButton();
+        this._toggleSubmitButton();
       });
     });
   }
+
+  resetValidation() {
+    this._toggleSubmitButton("disable");
+    this._inputList.forEach((inputElement) => {
+      this._hideErrorMessage(inputElement);
+    });
+  }
 }
-
-const newCardFormValidator = new FormValidator(
-  validationConfig,
-  newCardModalForm
-);
-newCardFormValidator.enableValidation();
-
-window.profileFormValidator = new FormValidator(
-  validationConfig,
-  profileModalForm
-);
-window.profileFormValidator.enableValidation();
-
-export { newCardFormValidator };
