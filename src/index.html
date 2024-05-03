@@ -6,23 +6,24 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
     <meta name="keywords" content="" />
-    <link rel="shortcut icon" href="favicon.ico" />
-    <link rel="stylesheet" href="./pages/index.css" />
+    <!-- <link rel="shortcut icon" href="favicon.ico" /> -->
+    <!-- <link rel="stylesheet" href="./pages/index.css" /> -->
     <title>Around the U.S.</title>
   </head>
   <body class="body">
     <div class="page">
       <header class="header">
         <img
-          src="./images/around_the_us.svg"
-          alt="Around the U.S."
+          src="<%=require('./images/around_the_us.svg')%>"
+          alt="Around the
+        U.S."
           class="header__image"
         />
       </header>
       <main class="content">
         <section class="profile">
           <img
-            src="images/profile_avatar.png"
+            src="<%=require('./images/profile_avatar.png')%>"
             alt="Profile Avatar"
             class="profile__avatar"
           />
@@ -164,8 +165,8 @@
       </div>
     </div>
     <!-------------------------------------- SCRIPTS ---------------------------------->
-    <script type="module" src="components/FormValidator.js"></script>
+    <!-- <script type="module" src="components/FormValidator.js"></script>
     <script type="module" src="components/Card.js"></script>
-    <script type="module" src="pages/index.js"></script>
+    <script type="module" src="pages/index.js"></script> -->
   </body>
 </html>
