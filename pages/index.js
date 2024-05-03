@@ -1,5 +1,7 @@
 import FormValidator from "../components/FormValidator.js";
 import Card from "../components/Card.js";
+import Section from "../utils/Section.js";
+import PopupWithImage from "../components/Popup.js";
 
 const initialCards = [
   {
@@ -48,9 +50,9 @@ const newCardTitle = newCardModal.querySelector(
 );
 const newCardLink = newCardModal.querySelector(".modal__input_type_card-link");
 const gallery = document.querySelector(".gallery");
-const enlargedCardModal = document.querySelector(".modal_type_enlarged-card");
-const enlargedImage = enlargedCardModal.querySelector(".modal__enlarged-image");
-const enlargedCardCaption = enlargedCardModal.querySelector(".modal__caption");
+// const enlargedCardModal = document.querySelector(".modal_type_enlarged-card");
+// const enlargedImage = enlargedCardModal.querySelector(".modal__enlarged-image");
+// const enlargedCardCaption = enlargedCardModal.querySelector(".modal__caption");
 const validationConfig = {
   formSelector: ".modal__form",
   inputSelector: ".modal__input",
@@ -75,11 +77,21 @@ function createCard(data) {
   const cardElement = new Card(data, "#card-template", handleCardEnlargement);
   return cardElement.render();
 }
-initialCards.forEach((cardData) => {
-  gallery.prepend(createCard(cardData));
-});
-// NEW CARDS
 
+const section = new Section(
+  { items: initialCards, renderer: createCard },
+  ".gallery"
+);
+section.renderItems();
+
+// ENLARGE CARD IMAGE
+function handleCardEnlargement(evt) {
+  const enlrgImgPopup = new PopupWithImage(".modal_type_enlarged-card");
+  enlrgImgPopup.open(evt);
+  enlrgImgPopup.setEventListeners(evt);
+}
+
+// NEW CARDS
 function handleNewCardFormSubmit(evt) {
   const newCardData = {
     name: `${newCardTitle.value}`,
@@ -96,9 +108,12 @@ function handleNewCardFormSubmit(evt) {
 
 newCardModalForm.addEventListener("submit", handleNewCardFormSubmit);
 
+// const popupex = new Popup(".modal_type_new-card");
 // OPENING MODALS
 addCardButton.addEventListener("click", () => {
-  openPopup(newCardModal);
+  // openPopup(newCardModal);
+  // popupex.open();
+  // popupex.setEventListeners();
 });
 
 editProfileButton.addEventListener("click", function inputProfileInfo() {
@@ -108,12 +123,11 @@ editProfileButton.addEventListener("click", function inputProfileInfo() {
   profileFormValidator.resetValidation();
 });
 
-function openPopup(popup) {
-  popup.classList.add("modal_opened");
-  popup.addEventListener("click", closeWithOutsideClick);
-  document.addEventListener("keydown", closeWithEsc);
-}
-
+// function openPopup(popup) {
+//   popup.classList.add("modal_opened");
+//   popup.addEventListener("click", closeWithOutsideClick);
+//   document.addEventListener("keydown", closeWithEsc);
+// }
 // SUBMIT PROFILE MODAL
 function handleProfileFormSubmit(evt) {
   profileName.textContent = profileModalNameInput.value;
@@ -125,36 +139,28 @@ function handleProfileFormSubmit(evt) {
 profileModalForm.addEventListener("submit", handleProfileFormSubmit);
 
 // CLOSING MODAL
-closeModalButtons.forEach((button) => {
-  const popup = button.closest(".modal");
-  button.addEventListener("click", () => closePopup(popup));
-});
+// closeModalButtons.forEach((button) => {
+//   const popup = button.closest(".modal");
+//   button.addEventListener("click", () => closePopup(popup));
+// });
 
-function closeWithOutsideClick(evt) {
-  if (evt.target === evt.currentTarget) {
-    closePopup(evt.currentTarget);
-  }
-}
+// function closeWithOutsideClick(evt) {
+//   if (evt.target === evt.currentTarget) {
+//     closePopup(evt.currentTarget);
+//   }
+// }
 
-function closeWithEsc(evt) {
-  if (evt.key === "Escape") {
-    closePopup(evt.currentTarget.querySelector(".modal_opened"));
-  }
-}
+// function closeWithEsc(evt) {
+//   if (evt.key === "Escape") {
+//     closePopup(evt.currentTarget.querySelector(".modal_opened"));
+//   }
+// }
 
-function closePopup(popup) {
-  popup.classList.remove("modal_opened");
-  popup.removeEventListener("click", closeWithOutsideClick);
-  document.removeEventListener("keydown", closeWithEsc);
-}
-
-// ENLARGE CARD IMAGE
-function handleCardEnlargement(evt) {
-  openPopup(enlargedCardModal);
-  enlargedImage.src = evt.target.src;
-  enlargedImage.alt = evt.target.alt;
-  enlargedCardCaption.textContent = evt.target.alt;
-}
+// function closePopup(popup) {
+//   popup.classList.remove("modal_opened");
+//   popup.removeEventListener("click", closeWithOutsideClick);
+//   document.removeEventListener("keydown", closeWithEsc);
+// }
 
 // VALIDATION
 newCardFormValidator.enableValidation();
@@ -187,5 +193,5 @@ profileFormValidator.enableValidation();
 // formValidators[ profileForm.getAttribute('name') ].resetValidation()
 
 // // or you can use a string – the name of the form (you know it from `index.html`)
-
 // formValidators['profile-form'].resetValidation()
+//
