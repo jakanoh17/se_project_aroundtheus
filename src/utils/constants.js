@@ -1,11 +1,13 @@
 import Section from "../utils/Section.js";
-import {
-  PopupWithImage,
-  PopupWithForm,
-  UserInfo,
-} from "../components/Popup.js";
+import PopupWithForm from "../components/PopupWithForm.js";
+import PopupWithImage from "../components/PopupWithImage.js";
+import UserInfo from "../components/UserInfo.js";
 import FormValidator from "../components/FormValidator.js";
-import { createCard, handleNewCardFormSubmit } from "../pages/index.js";
+import {
+  createCard,
+  handleNewCardFormSubmit,
+  handleProfileSubmit,
+} from "../pages/index.js";
 
 const initialCards = [
   {
@@ -73,7 +75,12 @@ export const newCardFormPopup = new PopupWithForm(
   ".modal_type_new-card",
   handleNewCardFormSubmit
 );
-export const profFormPopup = new UserInfo(".modal_type_profile", {
+export const profFormPopup = new PopupWithForm(
+  ".modal_type_profile",
+  handleProfileSubmit
+);
+
+export const profUserInfo = new UserInfo({
   userNameSelec: ".modal__input_type_name",
   descrSelec: ".modal__input_type_description",
 });

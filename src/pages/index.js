@@ -9,6 +9,7 @@ import {
   enlrgImgPopup,
   section,
   newCardFormPopup,
+  profUserInfo,
   profFormPopup,
 } from "../utils/constants.js";
 
@@ -23,7 +24,6 @@ section.renderItems();
 // ENLARGE CARD IMAGE
 function handleCardEnlargement(evt) {
   enlrgImgPopup.open(evt);
-  enlrgImgPopup.setEventListeners(evt);
 }
 
 // SUBMIT NEW CARD MODAL
@@ -37,15 +37,21 @@ export function handleNewCardFormSubmit(evt, newCardData) {
   newCardFormValidator.resetValidation();
 }
 
+// SUBMIT PROFILE MODAL
+export function handleProfileSubmit(evt, newProfData) {
+  profUserInfo.setUserInfo(newProfData);
+  profFormPopup.close();
+  evt.preventDefault();
+}
+
 // OPEN MODALS
 addCardButton.addEventListener("click", () => {
-  newCardFormPopup.setEventListeners();
   newCardFormPopup.open();
 });
 
 editProfileButton.addEventListener("click", function inputProfileInfo() {
   profFormPopup.open();
-  profFormPopup.setEventListeners();
+  profUserInfo.getUserInfo();
   profileFormValidator.resetValidation();
 });
 
