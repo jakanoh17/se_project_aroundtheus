@@ -3,17 +3,48 @@ import Card from "../components/Card.js";
 import {
   editProfileButton,
   addCardButton,
-  gallery,
-  newCardFormValidator,
-  profileFormValidator,
-  enlrgImgPopup,
-  section,
-  newCardFormPopup,
-  profUserInfo,
-  profFormPopup,
+  newCardModalForm,
+  profNameInput,
+  profDescrInput,
+  validationConfig,
+  profileModalForm,
+  initialCards,
 } from "../utils/constants.js";
+import Section from "../components/Section.js";
+import PopupWithForm from "../components/PopupWithForm.js";
+import PopupWithImage from "../components/PopupWithImage.js";
+import UserInfo from "../components/UserInfo.js";
+import FormValidator from "../components/FormValidator.js";
 
-// INITIAL CARDS
+//CLASS INSTANCES
+const newCardFormValidator = new FormValidator(
+  validationConfig,
+  newCardModalForm
+);
+
+const profileFormValidator = new FormValidator(
+  validationConfig,
+  profileModalForm
+);
+const enlrgImgPopup = new PopupWithImage(".modal_type_enlarged-card");
+const section = new Section(
+  { items: initialCards, renderer: createCard },
+  ".gallery"
+);
+const newCardFormPopup = new PopupWithForm(
+  ".modal_type_new-card",
+  handleNewCardFormSubmit
+);
+const profFormPopup = new PopupWithForm(
+  ".modal_type_profile",
+  handleProfileSubmit
+);
+const profUserInfo = new UserInfo({
+  userNameSelec: ".profile__name",
+  descrSelec: ".profile__title",
+});
+
+// POPULATE INITIAL CARDS
 export function createCard(data) {
   const cardElement = new Card(data, "#card-template", handleCardEnlargement);
   return cardElement.render();
@@ -27,21 +58,23 @@ function handleCardEnlargement(evt) {
 }
 
 // SUBMIT NEW CARD MODAL
-export function handleNewCardFormSubmit(evt, newCardData) {
-  gallery.prepend(createCard(newCardData));
+export function handleNewCardFormSubmit(newCardData) {
+  const newCardObj = new Section(
+    { items: newCardData, renderer: createCard },
+    ".gallery"
+  );
+  newCardObj.renderItems();
 
   newCardFormPopup.close();
+  newCardModalForm.reset();
 
-  evt.preventDefault();
-  evt.target.reset();
   newCardFormValidator.resetValidation();
 }
 
 // SUBMIT PROFILE MODAL
-export function handleProfileSubmit(evt, newProfData) {
+export function handleProfileSubmit(newProfData) {
   profUserInfo.setUserInfo(newProfData);
   profFormPopup.close();
-  evt.preventDefault();
 }
 
 // OPEN MODALS
@@ -51,7 +84,9 @@ addCardButton.addEventListener("click", () => {
 
 editProfileButton.addEventListener("click", function inputProfileInfo() {
   profFormPopup.open();
-  profUserInfo.getUserInfo();
+  const currUserInfo = profUserInfo.getUserInfo();
+  profNameInput.value = currUserInfo.name;
+  profDescrInput.value = currUserInfo.description;
   profileFormValidator.resetValidation();
 });
 

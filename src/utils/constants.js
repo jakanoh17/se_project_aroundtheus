@@ -1,15 +1,4 @@
-import Section from "../utils/Section.js";
-import PopupWithForm from "../components/PopupWithForm.js";
-import PopupWithImage from "../components/PopupWithImage.js";
-import UserInfo from "../components/UserInfo.js";
-import FormValidator from "../components/FormValidator.js";
-import {
-  createCard,
-  handleNewCardFormSubmit,
-  handleProfileSubmit,
-} from "../pages/index.js";
-
-const initialCards = [
+export const initialCards = [
   {
     name: "Yosemite Valley",
     link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/around-project/yosemite.jpg",
@@ -38,18 +27,17 @@ const initialCards = [
 export const editProfileButton = document.querySelector(
   ".profile__edit-button"
 );
-const profileModalForm = document.forms["edit-form"];
+export const profileModalForm = document.forms["edit-form"];
 export const addCardButton = document.querySelector(".profile__add-button");
 const newCardModal = document.querySelector(".modal_type_new-card");
-const newCardModalForm = document.forms["new-card-form"];
+export const newCardModalForm = document.forms["new-card-form"];
 export const newCardTitle = newCardModal.querySelector(
   ".modal__input_type_card-title"
 );
 export const newCardLink = newCardModal.querySelector(
   ".modal__input_type_card-link"
 );
-export const gallery = document.querySelector(".gallery");
-const validationConfig = {
+export const validationConfig = {
   formSelector: ".modal__form",
   inputSelector: ".modal__input",
   submitButtonSelector: ".modal__submit-button",
@@ -57,30 +45,8 @@ const validationConfig = {
   inputErrorClass: "modal__input_invalid",
   errorClass: "modal__error-message_visible",
 };
-export const newCardFormValidator = new FormValidator(
-  validationConfig,
-  newCardModalForm
-);
 
-export const profileFormValidator = new FormValidator(
-  validationConfig,
-  profileModalForm
+export const profNameInput = document.querySelector(".modal__input_type_name");
+export const profDescrInput = document.querySelector(
+  ".modal__input_type_description"
 );
-export const enlrgImgPopup = new PopupWithImage(".modal_type_enlarged-card");
-export const section = new Section(
-  { items: initialCards, renderer: createCard },
-  ".gallery"
-);
-export const newCardFormPopup = new PopupWithForm(
-  ".modal_type_new-card",
-  handleNewCardFormSubmit
-);
-export const profFormPopup = new PopupWithForm(
-  ".modal_type_profile",
-  handleProfileSubmit
-);
-
-export const profUserInfo = new UserInfo({
-  userNameSelec: ".modal__input_type_name",
-  descrSelec: ".modal__input_type_description",
-});
