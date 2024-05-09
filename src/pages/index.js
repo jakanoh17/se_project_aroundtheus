@@ -59,11 +59,7 @@ function handleCardEnlargement(evt) {
 
 // SUBMIT NEW CARD MODAL
 export function handleNewCardFormSubmit(newCardData) {
-  const newCardObj = new Section(
-    { items: newCardData, renderer: createCard },
-    ".gallery"
-  );
-  newCardObj.renderItems();
+  section.addItem(createCard(newCardData));
 
   newCardFormPopup.close();
   newCardModalForm.reset();
