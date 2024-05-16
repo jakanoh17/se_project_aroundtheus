@@ -1,8 +1,18 @@
+//creates card element w event listeners
 export default class Card {
-  constructor(data, cardSelector, handleImageClick) {
+  constructor(
+    data,
+    cardSelector,
+    handleImageClick,
+    handleTrashClick,
+    handleLikeClick
+  ) {
     this.data = data;
     this.cardSelector = cardSelector;
     this._handleImageClick = handleImageClick;
+    this._handleTrashClick = handleTrashClick;
+    this._handleLikeClick = handleLikeClick;
+
     this._element = document
       .querySelector(this.cardSelector)
       .content.querySelector(".gallery__card")
@@ -14,29 +24,32 @@ export default class Card {
   }
 
   _setEventListeners() {
-    this._likeButton.addEventListener("click", () => {
-      this._handleLikeButtonClick();
-    });
-    this._trashButton.addEventListener("click", () => {
-      this._handleDeleteButtonClick();
-    });
+    this._trashButton.addEventListener("click", this._handleTrashClick);
     this._image.addEventListener("click", this._handleImageClick);
+    this._likeButton.addEventListener("click", (evt) => {
+      this._selectLikeButton(evt);
+    });
   }
 
-  _handleLikeButtonClick() {
+  _selectLikeButton(evt) {
     this._likeButton.classList.toggle("gallery__like-button_selected");
-  }
-
-  _handleDeleteButtonClick() {
-    this._trashButton.closest(".gallery__card").remove();
+    if (this._likeButton.classList.contains("gallery__like-button_selected")) {
+      this._handleLikeClick(evt, "PUT");
+    } else {
+      this._handleLikeClick(evt, "DELETE");
+    }
   }
 
   render() {
     this._location.textContent = this.data.name;
     this._image.setAttribute("alt", this.data.name);
     this._image.setAttribute("src", this.data.link);
-
+    this._element.id = this.data._id;
     this._setEventListeners();
+
+    if (this.data.isLiked) {
+      this._likeButton.classList.add("gallery__like-button_selected");
+    }
 
     return this._element;
   }

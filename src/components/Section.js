@@ -1,3 +1,6 @@
+//adds card element to DOM; passes Card module through in the
+//"renderer" so only need to call up Section module for both card elem. and DOM creation
+
 export default class Section {
   constructor({ items, renderer }, selector) {
     this._items = items;
@@ -5,14 +8,14 @@ export default class Section {
     this._container = document.querySelector(selector);
   }
 
-  addItem(item) {
-    this._container.prepend(item);
-  }
-
   renderItems() {
     this._items.forEach((item) => {
       this._element = this._renderer(item);
-      this.addItem(this._element);
+      this._addItem(this._element);
     });
+  }
+
+  _addItem() {
+    this._container.append(this._element);
   }
 }

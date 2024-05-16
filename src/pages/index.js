@@ -8,13 +8,18 @@ import {
   profDescrInput,
   validationConfig,
   profileModalForm,
-  initialCards,
+  apiHeaders,
+  editAviButton,
+  editAviForm,
+  profName,
+  profDescr,
 } from "../utils/constants.js";
 import Section from "../components/Section.js";
 import PopupWithForm from "../components/PopupWithForm.js";
 import PopupWithImage from "../components/PopupWithImage.js";
 import UserInfo from "../components/UserInfo.js";
 import FormValidator from "../components/FormValidator.js";
+import Api from "../components/Api.js";
 
 //CLASS INSTANCES
 const newCardFormValidator = new FormValidator(
@@ -26,11 +31,9 @@ const profileFormValidator = new FormValidator(
   validationConfig,
   profileModalForm
 );
+
+const editAviFormValidator = new FormValidator(validationConfig, editAviForm);
 const enlrgImgPopup = new PopupWithImage(".modal_type_enlarged-card");
-const section = new Section(
-  { items: initialCards, renderer: createCard },
-  ".gallery"
-);
 const newCardFormPopup = new PopupWithForm(
   ".modal_type_new-card",
   handleNewCardFormSubmit
@@ -39,18 +42,60 @@ const profFormPopup = new PopupWithForm(
   ".modal_type_profile",
   handleProfileSubmit
 );
+const delCardFormPopup = new PopupWithForm(
+  ".modal_type_delete-card",
+  handleDelCardSubmit
+);
+const editAviFormPopup = new PopupWithForm(
+  ".modal_type_edit-avi",
+  handleEditAviSubmit
+);
 const profUserInfo = new UserInfo({
   userNameSelec: ".profile__name",
   descrSelec: ".profile__title",
+  aviSelec: ".profile__avatar",
 });
+const api = new Api({
+  baseUrl: "https://around-api.en.tripleten-services.com/v1",
+  headers: apiHeaders,
+});
+const delCardApi = new Api({
+  method: "DELETE",
+  headers: apiHeaders,
+});
+
+//INITIALLY SET USER INFO
+api
+  .getUserInfo()
+  .then((data) => {
+    const { name, about: description, avatar } = data;
+    profUserInfo.setUserInfo({ name, description, avatar });
+  })
+  .catch((err) => console.error(err));
 
 // POPULATE INITIAL CARDS
 export function createCard(data) {
-  const cardElement = new Card(data, "#card-template", handleCardEnlargement);
+  const cardElement = new Card(
+    data,
+    "#card-template",
+    handleCardEnlargement,
+    handleTrashClick,
+    sendLikeReq
+  );
   return cardElement.render();
 }
 
-section.renderItems();
+api
+  .getInitialCards()
+  .then((data) => {
+    const initialSection = new Section(
+      { items: data, renderer: createCard },
+      ".gallery"
+    );
+
+    initialSection.renderItems();
+  })
+  .catch((err) => console.error(err));
 
 // ENLARGE CARD IMAGE
 function handleCardEnlargement(evt) {
@@ -58,19 +103,112 @@ function handleCardEnlargement(evt) {
 }
 
 // SUBMIT NEW CARD MODAL
-export function handleNewCardFormSubmit(newCardData) {
-  section.addItem(createCard(newCardData));
+function handleNewCardFormSubmit({ name, link }) {
+  const newCardApi = new Api({
+    method: "POST",
+    headers: apiHeaders,
+    body: JSON.stringify({
+      name,
+      link,
+    }),
+  });
+  newCardFormPopup.popup.querySelector(".modal__submit-button").textContent =
+    "Creating...";
+  newCardApi
+    .getInitialCards()
+    .then((newCardData) => {
+      const newCardSection = new Section(
+        { items: newCardData, renderer: createCard },
+        ".gallery"
+      );
 
-  newCardFormPopup.close();
-  newCardModalForm.reset();
-
-  newCardFormValidator.resetValidation();
+      newCardSection.renderItems();
+    })
+    .catch((err) => console.error(err))
+    .finally(() => {
+      newCardFormPopup.popup.querySelector(
+        ".modal__submit-button"
+      ).textContent = "Create";
+      newCardFormPopup.close();
+      newCardModalForm.reset();
+      newCardFormValidator.resetValidation();
+    });
 }
 
 // SUBMIT PROFILE MODAL
-export function handleProfileSubmit(newProfData) {
-  profUserInfo.setUserInfo(newProfData);
-  profFormPopup.close();
+function handleProfileSubmit({ name, description: about }) {
+  const editProfileApi = new Api({
+    method: "PATCH",
+    headers: apiHeaders,
+    body: JSON.stringify({
+      name,
+      about,
+    }),
+  });
+  profFormPopup.popup.querySelector(".modal__submit-button").textContent =
+    "Saving...";
+  editProfileApi
+    .getUserInfo()
+    .catch((err) => {
+      console.error(`Error: ${err}`);
+    })
+    .finally(() => {
+      profFormPopup.popup.querySelector(".modal__submit-button").textContent =
+        "Save";
+      profFormPopup.close();
+    });
+}
+
+// DELETE CARD MODAL
+function handleTrashClick(evt) {
+  delCardFormPopup.open();
+  delCardFormPopup.popup.querySelector("input").value =
+    evt.target.closest(".gallery__card").id;
+}
+
+function handleDelCardSubmit({ cardId }) {
+  delCardFormPopup.close();
+  delCardApi.deleteCardInfo(cardId).catch((err) => {
+    console.error(err);
+  });
+}
+
+//LIKE CARD
+function sendLikeReq(evt, method) {
+  const likeCardApi = new Api({
+    method: method,
+    headers: apiHeaders,
+  });
+  likeCardApi.toggleLikeCard(evt.target.closest(".gallery__card").id);
+}
+
+// EDIT AVATAR FORM
+function handleEditAviSubmit(avatar) {
+  const editAviApi = new Api({
+    method: "PATCH",
+    headers: apiHeaders,
+    body: JSON.stringify(avatar),
+  });
+
+  editAviFormPopup.popup.querySelector(".modal__submit-button").textContent =
+    "Saving...";
+
+  editAviApi
+    .editAvatar()
+    .then((data) => {
+      profUserInfo.setAvatar(data);
+    })
+    .catch((err) => {
+      console.error(err);
+    })
+    .finally(() => {
+      editAviFormPopup.popup.querySelector(
+        ".modal__submit-button"
+      ).textContent = "Save";
+
+      editAviForm.reset();
+      editAviFormPopup.close();
+    });
 }
 
 // OPEN MODALS
@@ -80,12 +218,17 @@ addCardButton.addEventListener("click", () => {
 
 editProfileButton.addEventListener("click", function inputProfileInfo() {
   profFormPopup.open();
-  const currUserInfo = profUserInfo.getUserInfo();
-  profNameInput.value = currUserInfo.name;
-  profDescrInput.value = currUserInfo.description;
+  profNameInput.value = profName.textContent;
+  profDescrInput.value = profDescr.textContent;
   profileFormValidator.resetValidation();
 });
 
-// VALIDATION
+editAviButton.addEventListener("click", () => {
+  editAviFormPopup.open();
+  editAviFormValidator.resetValidation();
+});
+
+// FORM VALIDATION
 newCardFormValidator.enableValidation();
 profileFormValidator.enableValidation();
+editAviFormValidator.enableValidation();

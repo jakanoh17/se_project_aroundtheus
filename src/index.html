@@ -6,8 +6,6 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
     <meta name="keywords" content="" />
-    <!-- <link rel="shortcut icon" href="favicon.ico" /> -->
-    <!-- <link rel="stylesheet" href="./pages/index.css" /> -->
     <title>Around the U.S.</title>
   </head>
   <body class="body">
@@ -22,19 +20,21 @@
       </header>
       <main class="content">
         <section class="profile">
-          <img
-            src="<%=require('./images/profile_avatar.png')%>"
-            alt="Profile Avatar"
-            class="profile__avatar"
-          />
+          <div class="profile__avatar-container">
+            <img
+              src="<%=require('./images/black_block.jpg')%>"
+              alt="Profile Avatar"
+              class="profile__avatar"
+            />
+          </div>
           <div class="profile__details">
-            <h1 class="profile__name">Jacques Cousteau</h1>
+            <h1 class="profile__name"></h1>
             <button
               type="button"
               class="profile__edit-button"
               aria-label="edit profile name"
             ></button>
-            <p class="profile__title">Explorer</p>
+            <p class="profile__title"></p>
           </div>
           <button
             type="button"
@@ -66,7 +66,7 @@
       <footer class="footer">
         <p class="footer__copyright">&copy; 2024 Around the U.S.</p>
       </footer>
-      <!------------------------- PROFILE FORM ---------------------------------->
+      <!------------------------- MODAL: FORM - PROFILE ---------------------------------->
       <div class="modal modal_type_profile">
         <form class="modal__form" id="edit-form">
           <button
@@ -105,7 +105,7 @@
           </button>
         </form>
       </div>
-      <!------------------------- NEW CARD FORM----------------------------------->
+      <!------------------------- MODAL: FORM - NEW CARD ----------------------------------->
       <div class="modal modal_type_new-card">
         <form class="modal__form" id="new-card-form">
           <button
@@ -148,25 +148,58 @@
           </button>
         </form>
       </div>
-      <!-------------------------------- ENLARGED CARD LOGIC --------------------------->
+      <!-------------------------------- MODAL: ENLARGED CARD --------------------------->
       <div class="modal modal_type_enlarged-card">
         <div class="modal__enlarged-card-container">
           <button
             type="button"
             class="modal__close-button modal__close-button_element_enlarged-card"
           ></button>
-          <img
-            src="/images/mobile_layout.jpg"
-            alt="enlarged image"
-            class="modal__enlarged-image"
-          />
+          <img src="" alt="enlarged image" class="modal__enlarged-image" />
           <p class="modal__caption">Name</p>
         </div>
       </div>
+      <!--------------------------------MODAL: DELETE FORM - "ARE YOU SURE?"  --------------------------->
+      <div class="modal modal_type_delete-card">
+        <form
+          class="modal__form modal__form_type_delete-card"
+          id="delete-card-form"
+        >
+          <button class="modal__close-button"></button>
+          <h2 class="modal__form-title modal__form-title_form_delete-card">
+            Are you sure?
+          </h2>
+          <input
+            type="text"
+            class="modal__input modal__input_type_del-cardid"
+            name="cardId"
+          />
+          <button
+            class="modal__submit-button modal__submit-button_form_delete-card"
+          >
+            Yes
+          </button>
+        </form>
+      </div>
+      <!--------------------------------MODAL: FORM - "CHANGE AVATAR IMAGE" --------------------------->
+      <div class="modal modal_type_edit-avi">
+        <form class="modal__form modal__form_type_edit-avi" id="edit-avi-form">
+          <button class="modal__close-button"></button>
+          <h2 class="modal__form-title">Change profile picture</h2>
+          <input
+            id="new-avi-link"
+            class="modal__input"
+            type="url"
+            name="avatar"
+            placeholder="Image link"
+            required
+          />
+          <span
+            class="modal__error-message modal__error-message_visible new-avi-link-err-msg"
+          ></span>
+          <button type="submit" class="modal__submit-button">Save</button>
+        </form>
+      </div>
     </div>
-    <!-------------------------------------- SCRIPTS ---------------------------------->
-    <!-- <script type="module" src="components/FormValidator.js"></script>
-    <script type="module" src="components/Card.js"></script>
-    <script type="module" src="pages/index.js"></script> -->
   </body>
 </html>

@@ -20,6 +20,9 @@ A simple landing page that showcases a photography profile with pictures of vari
   - Create new card
   - Edit profile details
 - Form validation
+- OOP(use of classes)
+- Api calls
+- node.js
 
 **Figma design links**
 

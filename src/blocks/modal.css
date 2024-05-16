@@ -19,6 +19,10 @@
   cursor: pointer;
 }
 
+.modal_type_enlarged-card {
+  flex-direction: column;
+}
+
 .modal__form {
   box-sizing: border-box;
   padding: 35px 36px;
@@ -35,6 +39,11 @@
   justify-content: center;
   position: relative;
   cursor: default;
+}
+
+.modal__form_type_delete-card,
+.modal__form_type_edit-avi {
+  min-height: 0px;
 }
 
 .modal__close-button {
@@ -63,11 +72,15 @@
   font-size: 24px;
   font-weight: 900;
 }
+
 .modal__form-title_form_new-card {
   font-size: 23px;
   line-height: 1.21;
 }
 
+.modal__form-title_form_delete-card {
+  margin-bottom: 0px;
+}
 .modal__input {
   border-style: none;
   border-bottom: 1px solid #00000033;
@@ -88,6 +101,10 @@
 
 .modal__input_invalid {
   border-bottom-color: #f00;
+}
+
+.modal__input_type_del-cardid {
+  display: none;
 }
 
 .modal__error-message {
@@ -131,8 +148,8 @@
   cursor: default;
 }
 
-.modal_type_enlarged-card {
-  flex-direction: column;
+.modal__submit-button_form_delete-card {
+  margin-top: 38px;
 }
 
 .modal__close-button_element_enlarged-card {

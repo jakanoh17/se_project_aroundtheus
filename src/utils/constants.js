@@ -1,34 +1,12 @@
-export const initialCards = [
-  {
-    name: "Yosemite Valley",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/around-project/yosemite.jpg",
-  },
-  {
-    name: "Lake Louise",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/around-project/lake-louise.jpg",
-  },
-  {
-    name: "Bald Mountains",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/around-project/bald-mountains.jpg",
-  },
-  {
-    name: "Latemar",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/around-project/latemar.jpg",
-  },
-  {
-    name: "Vanoise National Park",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/around-project/vanoise.jpg",
-  },
-  {
-    name: "Lago di Braies",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/software-engineer/around-project/lago.jpg",
-  },
-];
 export const editProfileButton = document.querySelector(
   ".profile__edit-button"
 );
 export const profileModalForm = document.forms["edit-form"];
+export const editAviForm = document.forms["edit-avi-form"];
 export const addCardButton = document.querySelector(".profile__add-button");
+export const editAviButton = document.querySelector(
+  ".profile__avatar-container"
+);
 const newCardModal = document.querySelector(".modal_type_new-card");
 export const newCardModalForm = document.forms["new-card-form"];
 export const newCardTitle = newCardModal.querySelector(
@@ -50,3 +28,9 @@ export const profNameInput = document.querySelector(".modal__input_type_name");
 export const profDescrInput = document.querySelector(
   ".modal__input_type_description"
 );
+export const profName = document.querySelector(".profile__name");
+export const profDescr = document.querySelector(".profile__title");
+export const apiHeaders = {
+  authorization: "1e41f1e9-9859-4a6e-b008-27b738619ee0",
+  "Content-Type": "application/json",
+};
