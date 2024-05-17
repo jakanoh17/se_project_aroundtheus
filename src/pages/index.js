@@ -167,10 +167,12 @@ function handleTrashClick(evt) {
 }
 
 function handleDelCardSubmit({ cardId }) {
-  delCardFormPopup.close();
-  delCardApi.deleteCardInfo(cardId).catch((err) => {
-    console.error(err);
-  });
+  delCardApi
+    .deleteCardInfo(cardId)
+    .catch((err) => {
+      console.error(err);
+    })
+    .finally(delCardFormPopup.close());
 }
 
 //LIKE CARD
