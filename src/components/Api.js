@@ -20,7 +20,7 @@ export default class Api {
     );
   }
 
-  getInitialCards() {
+  getCards() {
     return this._definePromise(
       "https://around-api.en.tripleten-services.com/v1/cards"
     );

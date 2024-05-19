@@ -68,8 +68,8 @@ const delCardApi = new Api({
 api
   .getUserInfo()
   .then((data) => {
-    const { name, about: description, avatar } = data;
-    profUserInfo.setUserInfo({ name, description, avatar });
+    const { name, about, avatar } = data;
+    profUserInfo.setUserInfo({ name, about, avatar });
   })
   .catch((err) => console.error(err));
 
@@ -84,10 +84,10 @@ export function createCard(data) {
   );
   return cardElement.render();
 }
-
 api
-  .getInitialCards()
+  .getCards()
   .then((data) => {
+    data.reverse();
     const initialSection = new Section(
       { items: data, renderer: createCard },
       ".gallery"
@@ -112,16 +112,17 @@ function handleNewCardFormSubmit({ name, link }) {
       link,
     }),
   });
+
   newCardFormPopup.popup.querySelector(".modal__submit-button").textContent =
     "Creating...";
+
   newCardApi
-    .getInitialCards()
-    .then((newCardData) => {
+    .getCards()
+    .then((data) => {
       const newCardSection = new Section(
-        { items: newCardData, renderer: createCard },
+        { items: [data], renderer: createCard },
         ".gallery"
       );
-
       newCardSection.renderItems();
     })
     .catch((err) => console.error(err))
@@ -149,6 +150,10 @@ function handleProfileSubmit({ name, description: about }) {
     "Saving...";
   editProfileApi
     .getUserInfo()
+    .then(() => {
+      profName.textContent = profNameInput.value;
+      profDescr.textContent = profDescrInput.value;
+    })
     .catch((err) => {
       console.error(`Error: ${err}`);
     })
@@ -169,6 +174,9 @@ function handleTrashClick(evt) {
 function handleDelCardSubmit({ cardId }) {
   delCardApi
     .deleteCardInfo(cardId)
+    .then(() => {
+      document.getElementById(cardId).remove();
+    })
     .catch((err) => {
       console.error(err);
     })
@@ -185,11 +193,11 @@ function sendLikeReq(evt, method) {
 }
 
 // EDIT AVATAR FORM
-function handleEditAviSubmit(avatar) {
+function handleEditAviSubmit(avatarObj) {
   const editAviApi = new Api({
     method: "PATCH",
     headers: apiHeaders,
-    body: JSON.stringify(avatar),
+    body: JSON.stringify(avatarObj),
   });
 
   editAviFormPopup.popup.querySelector(".modal__submit-button").textContent =
@@ -198,7 +206,7 @@ function handleEditAviSubmit(avatar) {
   editAviApi
     .editAvatar()
     .then((data) => {
-      profUserInfo.setAvatar(data);
+      profUserInfo.setUserInfo(data);
     })
     .catch((err) => {
       console.error(err);
