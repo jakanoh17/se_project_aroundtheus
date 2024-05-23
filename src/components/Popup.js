@@ -7,11 +7,15 @@ export default class Popup {
     this._boundEscHandler = this._handleEscClose.bind(this);
   }
 
-  open() {
-    this.popup.classList.add("modal_opened");
+  _setEventListeners() {
     this.popup.addEventListener("click", this._boundOutsideClickHandler);
     document.addEventListener("keydown", this._boundEscHandler);
     this._closeButton.addEventListener("click", this._boundCloseHandler);
+  }
+
+  open() {
+    this.popup.classList.add("modal_opened");
+    this._setEventListeners();
   }
 
   close() {

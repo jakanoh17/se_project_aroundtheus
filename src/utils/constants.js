@@ -30,7 +30,3 @@ export const profDescrInput = document.querySelector(
 );
 export const profName = document.querySelector(".profile__name");
 export const profDescr = document.querySelector(".profile__title");
-export const apiHeaders = {
-  authorization: "1e41f1e9-9859-4a6e-b008-27b738619ee0",
-  "Content-Type": "application/json",
-};

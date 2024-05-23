@@ -4,11 +4,8 @@ import {
   editProfileButton,
   addCardButton,
   newCardModalForm,
-  profNameInput,
-  profDescrInput,
   validationConfig,
   profileModalForm,
-  apiHeaders,
   editAviButton,
   editAviForm,
   profName,
@@ -57,19 +54,17 @@ const profUserInfo = new UserInfo({
 });
 const api = new Api({
   baseUrl: "https://around-api.en.tripleten-services.com/v1",
-  headers: apiHeaders,
+  headers: {
+    authorization: "1e41f1e9-9859-4a6e-b008-27b738619ee0",
+    "Content-Type": "application/json",
+  },
 });
-const delCardApi = new Api({
-  method: "DELETE",
-  headers: apiHeaders,
-});
-
+const cardSection = new Section({ renderer: createCard }, ".gallery");
 //INITIALLY SET USER INFO
 api
-  .getUserInfo()
+  .getInitialUserInfo()
   .then((data) => {
-    const { name, about, avatar } = data;
-    profUserInfo.setUserInfo({ name, about, avatar });
+    profUserInfo.setUserInfo(data);
   })
   .catch((err) => console.error(err));
 
@@ -84,16 +79,13 @@ export function createCard(data) {
   );
   return cardElement.render();
 }
+
 api
-  .getCards()
+  .getInitialCards()
   .then((data) => {
     data.reverse();
-    const initialSection = new Section(
-      { items: data, renderer: createCard },
-      ".gallery"
-    );
 
-    initialSection.renderItems();
+    cardSection.renderItems(data);
   })
   .catch((err) => console.error(err));
 
@@ -104,58 +96,37 @@ function handleCardEnlargement(evt) {
 
 // SUBMIT NEW CARD MODAL
 function handleNewCardFormSubmit({ name, link }) {
-  const newCardApi = new Api({
-    method: "POST",
-    headers: apiHeaders,
-    body: JSON.stringify({
-      name,
-      link,
-    }),
-  });
-
   newCardFormPopup.popup.querySelector(".modal__submit-button").textContent =
     "Creating...";
 
-  newCardApi
-    .getCards()
+  api
+    .postCards(name, link)
     .then((data) => {
-      const newCardSection = new Section(
-        { items: [data], renderer: createCard },
-        ".gallery"
-      );
-      newCardSection.renderItems();
+      cardSection.renderItems([data]);
+      newCardModalForm.reset();
+      newCardFormValidator.resetValidation();
+      newCardFormPopup.close();
     })
     .catch((err) => console.error(err))
     .finally(() => {
       newCardFormPopup.popup.querySelector(
         ".modal__submit-button"
       ).textContent = "Create";
-      newCardFormPopup.close();
-      newCardModalForm.reset();
-      newCardFormValidator.resetValidation();
     });
 }
 
 // SUBMIT PROFILE MODAL
 function handleProfileSubmit({ name, description: about }) {
-  const editProfileApi = new Api({
-    method: "PATCH",
-    headers: apiHeaders,
-    body: JSON.stringify({
-      name,
-      about,
-    }),
-  });
   profFormPopup.popup.querySelector(".modal__submit-button").textContent =
     "Saving...";
-  editProfileApi
-    .getUserInfo()
-    .then(() => {
-      profName.textContent = profNameInput.value;
-      profDescr.textContent = profDescrInput.value;
+  api
+    .editUserInfo(name, about)
+    .then((data) => {
+      profName.textContent = data.name;
+      profDescr.textContent = data.about;
     })
     .catch((err) => {
-      console.error(`Error: ${err}`);
+      console.error(err);
     })
     .finally(() => {
       profFormPopup.popup.querySelector(".modal__submit-button").textContent =
@@ -172,7 +143,7 @@ function handleTrashClick(evt) {
 }
 
 function handleDelCardSubmit({ cardId }) {
-  delCardApi
+  api
     .deleteCardInfo(cardId)
     .then(() => {
       document.getElementById(cardId).remove();
@@ -180,33 +151,27 @@ function handleDelCardSubmit({ cardId }) {
     .catch((err) => {
       console.error(err);
     })
-    .finally(delCardFormPopup.close());
+    .finally(() => {
+      delCardFormPopup.close();
+    });
 }
 
 //LIKE CARD
-function sendLikeReq(evt, method) {
-  const likeCardApi = new Api({
-    method: method,
-    headers: apiHeaders,
-  });
-  likeCardApi.toggleLikeCard(evt.target.closest(".gallery__card").id);
+function sendLikeReq(cardId, method) {
+  return api.toggleLikeCard(cardId, method);
 }
 
 // EDIT AVATAR FORM
 function handleEditAviSubmit(avatarObj) {
-  const editAviApi = new Api({
-    method: "PATCH",
-    headers: apiHeaders,
-    body: JSON.stringify(avatarObj),
-  });
-
   editAviFormPopup.popup.querySelector(".modal__submit-button").textContent =
     "Saving...";
 
-  editAviApi
-    .editAvatar()
+  api
+    .editAvatar(avatarObj)
     .then((data) => {
       profUserInfo.setUserInfo(data);
+      editAviForm.reset();
+      editAviFormPopup.close();
     })
     .catch((err) => {
       console.error(err);
@@ -215,9 +180,6 @@ function handleEditAviSubmit(avatarObj) {
       editAviFormPopup.popup.querySelector(
         ".modal__submit-button"
       ).textContent = "Save";
-
-      editAviForm.reset();
-      editAviFormPopup.close();
     });
 }
 
@@ -228,8 +190,7 @@ addCardButton.addEventListener("click", () => {
 
 editProfileButton.addEventListener("click", function inputProfileInfo() {
   profFormPopup.open();
-  profNameInput.value = profName.textContent;
-  profDescrInput.value = profDescr.textContent;
+  profUserInfo.getUserInfo();
   profileFormValidator.resetValidation();
 });
 

@@ -27,16 +27,27 @@ export default class Card {
     this._trashButton.addEventListener("click", this._handleTrashClick);
     this._image.addEventListener("click", this._handleImageClick);
     this._likeButton.addEventListener("click", (evt) => {
-      this._selectLikeButton(evt);
+      this._likeCard(evt);
     });
   }
 
-  _selectLikeButton(evt) {
-    this._likeButton.classList.toggle("gallery__like-button_selected");
+  _likeCard() {
     if (this._likeButton.classList.contains("gallery__like-button_selected")) {
-      this._handleLikeClick(evt, "PUT");
+      this._handleLikeClick(this._element.id, "DELETE")
+        .then(() => {
+          this._likeButton.classList.remove("gallery__like-button_selected");
+        })
+        .catch((err) => {
+          console.error(err);
+        });
     } else {
-      this._handleLikeClick(evt, "DELETE");
+      this._handleLikeClick(this._element.id, "PUT")
+        .then(() => {
+          this._likeButton.classList.add("gallery__like-button_selected");
+        })
+        .catch((err) => {
+          console.error(err);
+        });
     }
   }
 

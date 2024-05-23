@@ -3,49 +3,75 @@ export default class Api {
     this.options = options;
   }
 
-  _definePromise(url) {
-    return fetch(url, this.options)
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        }
-        return Promise.reject(`Error: ${res.status}`);
-      })
-      .catch((err) => console.error(err));
+  _makeRequest(url) {
+    return fetch(url, this.options).then((res) => {
+      if (res.ok) {
+        return res.json();
+      }
+      return Promise.reject(`Error: ${res.status}`);
+    });
   }
 
-  getUserInfo() {
-    return this._definePromise(
+  getInitialCards() {
+    return this._makeRequest(
+      "https://around-api.en.tripleten-services.com/v1/cards"
+    );
+  }
+
+  //get user info for the website
+  getInitialUserInfo() {
+    return this._makeRequest(
       "https://around-api.en.tripleten-services.com/v1/users/me"
     );
   }
 
-  getCards() {
-    return this._definePromise(
+  editUserInfo(name, about) {
+    this.options.method = "PATCH";
+    this.options.body = JSON.stringify({
+      name,
+      about,
+    });
+    return this._makeRequest(
+      "https://around-api.en.tripleten-services.com/v1/users/me"
+    );
+  }
+
+  postCards(name, link) {
+    this.options.method = "POST";
+    this.options.body = JSON.stringify({
+      name,
+      link,
+    });
+    return this._makeRequest(
       "https://around-api.en.tripleten-services.com/v1/cards"
     );
   }
 
   deleteCardInfo(cardId) {
-    return this._definePromise(
+    this.options.method = "DELETE";
+
+    return this._makeRequest(
       `https://around-api.en.tripleten-services.com/v1/cards/${cardId}`
     );
   }
 
-  toggleLikeCard(cardId) {
-    return this._definePromise(
+  toggleLikeCard(cardId, method) {
+    this.options.method = method;
+    return this._makeRequest(
       `https://around-api.en.tripleten-services.com/v1/cards/${cardId}/likes`
     );
   }
 
-  editAvatar() {
-    return this._definePromise(
+  editAvatar(avatarObj) {
+    this.options.method = "PATCH";
+    this.options.body = JSON.stringify(avatarObj);
+    return this._makeRequest(
       "https://around-api.en.tripleten-services.com/v1/users/me/avatar"
     );
   }
 }
 
-//come back to this; ref: Gen recs #5
-function setWebpageStart() {
-  return Promise.all(cardPromises);
-}
+// //come back to this; ref: Gen recs #5
+// function setWebpageStart() {
+//   return Promise.all(cardPromises);
+// }
