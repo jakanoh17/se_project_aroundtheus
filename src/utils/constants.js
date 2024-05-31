@@ -1,14 +1,15 @@
 export const editProfileButton = document.querySelector(
   ".profile__edit-button"
 );
-export const profileModalForm = document.forms["edit-form"];
+export const profileModalForm = document.forms["profile-form"];
 export const editAviForm = document.forms["edit-avi-form"];
+export const newCardModalForm = document.forms["new-card-form"];
+
 export const addCardButton = document.querySelector(".profile__add-button");
 export const editAviButton = document.querySelector(
   ".profile__avatar-container"
 );
 const newCardModal = document.querySelector(".modal_type_new-card");
-export const newCardModalForm = document.forms["new-card-form"];
 export const newCardTitle = newCardModal.querySelector(
   ".modal__input_type_card-title"
 );

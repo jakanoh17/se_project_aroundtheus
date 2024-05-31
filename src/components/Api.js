@@ -1,10 +1,11 @@
 export default class Api {
   constructor(options) {
     this.options = options;
+    this._baseUrl = this.options.baseUrl;
   }
 
-  _makeRequest(url) {
-    return fetch(url, this.options).then((res) => {
+  _makeRequest(endpoint) {
+    return fetch(this._baseUrl + endpoint, this.options).then((res) => {
       if (res.ok) {
         return res.json();
       }
@@ -13,16 +14,12 @@ export default class Api {
   }
 
   getInitialCards() {
-    return this._makeRequest(
-      "https://around-api.en.tripleten-services.com/v1/cards"
-    );
+    return this._makeRequest("/cards");
   }
 
   //get user info for the website
   getInitialUserInfo() {
-    return this._makeRequest(
-      "https://around-api.en.tripleten-services.com/v1/users/me"
-    );
+    return this._makeRequest("/users/me");
   }
 
   editUserInfo(name, about) {
@@ -31,9 +28,7 @@ export default class Api {
       name,
       about,
     });
-    return this._makeRequest(
-      "https://around-api.en.tripleten-services.com/v1/users/me"
-    );
+    return this._makeRequest("/users/me");
   }
 
   postCards(name, link) {
@@ -42,36 +37,23 @@ export default class Api {
       name,
       link,
     });
-    return this._makeRequest(
-      "https://around-api.en.tripleten-services.com/v1/cards"
-    );
+    return this._makeRequest("/cards");
   }
 
   deleteCardInfo(cardId) {
     this.options.method = "DELETE";
 
-    return this._makeRequest(
-      `https://around-api.en.tripleten-services.com/v1/cards/${cardId}`
-    );
+    return this._makeRequest(`/cards/${cardId}`);
   }
 
   toggleLikeCard(cardId, method) {
     this.options.method = method;
-    return this._makeRequest(
-      `https://around-api.en.tripleten-services.com/v1/cards/${cardId}/likes`
-    );
+    return this._makeRequest(`/cards/${cardId}/likes`);
   }
 
   editAvatar(avatarObj) {
     this.options.method = "PATCH";
     this.options.body = JSON.stringify(avatarObj);
-    return this._makeRequest(
-      "https://around-api.en.tripleten-services.com/v1/users/me/avatar"
-    );
+    return this._makeRequest("/users/me/avatar");
   }
 }
-
-// //come back to this; ref: Gen recs #5
-// function setWebpageStart() {
-//   return Promise.all(cardPromises);
-// }

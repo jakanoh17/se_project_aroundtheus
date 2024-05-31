@@ -8,8 +8,8 @@ import {
   profileModalForm,
   editAviButton,
   editAviForm,
-  profName,
-  profDescr,
+  profNameInput,
+  profDescrInput,
 } from "../utils/constants.js";
 import Section from "../components/Section.js";
 import PopupWithForm from "../components/PopupWithForm.js";
@@ -18,18 +18,6 @@ import UserInfo from "../components/UserInfo.js";
 import FormValidator from "../components/FormValidator.js";
 import Api from "../components/Api.js";
 
-//CLASS INSTANCES
-const newCardFormValidator = new FormValidator(
-  validationConfig,
-  newCardModalForm
-);
-
-const profileFormValidator = new FormValidator(
-  validationConfig,
-  profileModalForm
-);
-
-const editAviFormValidator = new FormValidator(validationConfig, editAviForm);
 const enlrgImgPopup = new PopupWithImage(".modal_type_enlarged-card");
 const newCardFormPopup = new PopupWithForm(
   ".modal_type_new-card",
@@ -96,42 +84,36 @@ function handleCardEnlargement(evt) {
 
 // SUBMIT NEW CARD MODAL
 function handleNewCardFormSubmit({ name, link }) {
-  newCardFormPopup.popup.querySelector(".modal__submit-button").textContent =
-    "Creating...";
-
+  newCardFormPopup.renderLoading(true, "Creating...");
   api
     .postCards(name, link)
     .then((data) => {
       cardSection.renderItems([data]);
       newCardModalForm.reset();
-      newCardFormValidator.resetValidation();
       newCardFormPopup.close();
+      formValidators[newCardModalForm.id].disableSubmitBtn();
     })
     .catch((err) => console.error(err))
     .finally(() => {
-      newCardFormPopup.popup.querySelector(
-        ".modal__submit-button"
-      ).textContent = "Create";
+      newCardFormPopup.renderLoading(false);
     });
 }
 
 // SUBMIT PROFILE MODAL
 function handleProfileSubmit({ name, description: about }) {
-  profFormPopup.popup.querySelector(".modal__submit-button").textContent =
-    "Saving...";
+  profFormPopup.renderLoading(true);
+
   api
     .editUserInfo(name, about)
     .then((data) => {
-      profName.textContent = data.name;
-      profDescr.textContent = data.about;
+      profUserInfo.setUserInfo(data);
+      profFormPopup.close();
     })
     .catch((err) => {
       console.error(err);
     })
     .finally(() => {
-      profFormPopup.popup.querySelector(".modal__submit-button").textContent =
-        "Save";
-      profFormPopup.close();
+      profFormPopup.renderLoading(false);
     });
 }
 
@@ -163,23 +145,20 @@ function sendLikeReq(cardId, method) {
 
 // EDIT AVATAR FORM
 function handleEditAviSubmit(avatarObj) {
-  editAviFormPopup.popup.querySelector(".modal__submit-button").textContent =
-    "Saving...";
-
+  editAviFormPopup.renderLoading(true);
   api
     .editAvatar(avatarObj)
     .then((data) => {
       profUserInfo.setUserInfo(data);
       editAviForm.reset();
+      formValidators[editAviForm.id].disableSubmitBtn();
       editAviFormPopup.close();
     })
     .catch((err) => {
       console.error(err);
     })
     .finally(() => {
-      editAviFormPopup.popup.querySelector(
-        ".modal__submit-button"
-      ).textContent = "Save";
+      editAviFormPopup.renderLoading(false);
     });
 }
 
@@ -190,16 +169,25 @@ addCardButton.addEventListener("click", () => {
 
 editProfileButton.addEventListener("click", function inputProfileInfo() {
   profFormPopup.open();
-  profUserInfo.getUserInfo();
-  profileFormValidator.resetValidation();
+  const { name, description } = profUserInfo.getUserInfo();
+  profNameInput.value = name;
+  profDescrInput.value = description;
+  formValidators[profileModalForm.id].disableSubmitBtn();
 });
 
 editAviButton.addEventListener("click", () => {
   editAviFormPopup.open();
-  editAviFormValidator.resetValidation();
 });
 
 // FORM VALIDATION
-newCardFormValidator.enableValidation();
-profileFormValidator.enableValidation();
-editAviFormValidator.enableValidation();
+const formValidators = {};
+function enableValidators() {
+  const formList = document.querySelectorAll(validationConfig.formSelector);
+  formList.forEach((form) => {
+    const validator = new FormValidator(validationConfig, form);
+    formValidators[form.id] = validator;
+    validator.enableValidation();
+  });
+}
+
+enableValidators();

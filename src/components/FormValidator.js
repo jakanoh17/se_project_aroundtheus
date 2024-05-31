@@ -56,10 +56,13 @@ export default class FormValidator {
     });
   }
 
-  resetValidation() {
+  // resetValidation() {
+  //   this._inputList.forEach((inputElement) => {
+  //     this._hideErrorMessage(inputElement);
+  //   });
+  // }
+
+  disableSubmitBtn() {
     this._toggleSubmitButton("disable");
-    this._inputList.forEach((inputElement) => {
-      this._hideErrorMessage(inputElement);
-    });
   }
 }

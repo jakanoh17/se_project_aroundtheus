@@ -1,7 +1,5 @@
-import { profNameInput, profDescrInput } from "../utils/constants";
-
 export default class UserInfo {
-  constructor({ userNameSelec, descrSelec, aviSelec }) {
+  constructor({ userNameSelec, descrSelec, aviSelec, nameInput, descrInput }) {
     this.userName = document.querySelector(userNameSelec);
     this.descr = document.querySelector(descrSelec);
     this.avatar = document.querySelector(aviSelec);
@@ -13,9 +11,11 @@ export default class UserInfo {
     this.avatar.src = avatar;
   }
 
-  //get user info when opening profile form
+  //return user info when opening profile form
   getUserInfo() {
-    profNameInput.value = this.userName.textContent;
-    profDescrInput.value = this.descr.textContent;
+    return {
+      name: this.userName.textContent,
+      description: this.descr.textContent,
+    };
   }
 }
