@@ -129,13 +129,12 @@ function handleDelCardSubmit({ cardId }) {
     .deleteCardInfo(cardId)
     .then(() => {
       document.getElementById(cardId).remove();
+      delCardFormPopup.close();
     })
     .catch((err) => {
       console.error(err);
     })
-    .finally(() => {
-      delCardFormPopup.close();
-    });
+    .finally(() => {});
 }
 
 //LIKE CARD
@@ -172,6 +171,7 @@ editProfileButton.addEventListener("click", function inputProfileInfo() {
   const { name, description } = profUserInfo.getUserInfo();
   profNameInput.value = name;
   profDescrInput.value = description;
+  formValidators[profileModalForm.id].resetValidation();
   formValidators[profileModalForm.id].disableSubmitBtn();
 });
 
